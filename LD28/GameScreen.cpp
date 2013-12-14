@@ -15,7 +15,7 @@ GameScreen::~GameScreen(void)
 {
 }
 
-void GameScreen::update(sf::Time& delta)
+void GameScreen::update(float delta)
 {
 	for(int i = 0; i < mGameObjects.size(); ++i)
 	{

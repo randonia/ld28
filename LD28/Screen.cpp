@@ -11,7 +11,7 @@ Screen::~Screen(void)
 {
 }
 
-void Screen::update(sf::Time& delta)
+void Screen::update(float delta)
 {
 	
 }

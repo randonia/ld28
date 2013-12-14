@@ -10,7 +10,7 @@ public:
 	Screen(void);
 	virtual ~Screen(void);
 	// The 'Tick' phase
-	virtual void update(sf::Time& delta);
+	virtual void update(float delta);
 	// The 'draw' phase. Draws everything to the window
 	virtual void draw(sf::RenderWindow& window);
 protected:

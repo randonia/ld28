@@ -39,6 +39,7 @@ int main (int argc, char* argv[])
 	while(window.isOpen())
 	{
 		delta = tick.restart();
+		float deltaTime = delta.asSeconds();
 		
 		// Do polling for events (like close window)
 		while(window.pollEvent(event))
@@ -52,7 +53,7 @@ int main (int argc, char* argv[])
 		}
 
 		// Update the first screen
-		screens.top()->update(delta);
+		screens.top()->update(deltaTime);
 		screens.top()->draw(window);
 	}
 

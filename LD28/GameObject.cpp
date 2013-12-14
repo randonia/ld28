@@ -5,7 +5,7 @@ GameObject::GameObject(void)
 {
 	// Set up the default shape
 	center = sf::CircleShape(2);
-	center.setOrigin(center.getRadius() * 0.5, center.getRadius() * 0.5);
+	center.setOrigin(center.getRadius() * 0.5f, center.getRadius() * 0.5f);
 	center.setFillColor(sf::Color::Red);
 	center.setOutlineColor(sf::Color::Cyan);
 	center.setOutlineThickness(1);
@@ -18,7 +18,7 @@ GameObject::~GameObject(void)
 {
 }
 
-void GameObject::update(sf::Time delta)
+void GameObject::update(float delta)
 {
 	center.setPosition(position);
 }

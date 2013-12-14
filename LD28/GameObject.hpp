@@ -20,7 +20,7 @@ public:
 	// The position of this object. Center origin!
 	sf::Vector2<float> position;
 
-	virtual void update(sf::Time delta);
+	virtual void update(float delta);
 	virtual void draw(sf::RenderWindow& window);
 	
 protected:

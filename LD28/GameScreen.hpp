@@ -14,7 +14,7 @@ public:
 
 	Player * player;
 
-	void update(sf::Time& delta) override;
+	void update(float delta) override;
 	void draw(sf::RenderWindow& window) override;
 };
 
