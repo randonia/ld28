@@ -1,7 +1,9 @@
 #pragma once
 
+#include <queue>
 #include "Screen.hpp"
 #include "GameObject.hpp"
+#include "CollisionModel.hpp"
 #include "Player.hpp"
 #include "Bonus.hpp"
 
@@ -12,6 +14,8 @@ public:
 	~GameScreen(void);
 
 	std::vector<GameObject*> mGameObjects;
+	// Used for collision checking
+	std::queue<CollisionInfo*> mCollidedObjects;
 
 	Player * player;
 	// The speed the player is currently falling

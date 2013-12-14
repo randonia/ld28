@@ -31,10 +31,17 @@ public:
 	virtual void update(float delta);
 	virtual void draw(sf::RenderWindow& window);
 	
-	unsigned int getCollisionFlags();
-	// Returns true if the given flag exists
-	bool checkCollisionFlags(CollisionFlags flagToCheck);
+	// Use this to grab the flag this collides with
+	unsigned int getCollidesWith();
+	// Returns true if the given flag exists. Use this to test what this collides with
+	bool checkCollidesWith(unsigned int flagToCheck);
+
+	// Use this to identify this gameobject's flags
+	unsigned int getCollisionType();
+	// Returns true if the given flag to check matches this gameobject's type
+	bool checkCollisionType(unsigned int flagToCheck);
 	
+
 	// The CollisionModel this gameobject uses
 	CollisionModel * mCollision;
 	
@@ -45,6 +52,25 @@ protected:
 
 	// The shape to draw to the renderwindow
 	sf::CircleShape center;
+};
+
+// A collision info data holder. Gets pushed when a collision occurs
+struct CollisionInfo
+{
+public:
+
+	CollisionInfo(GameObject* src, GameObject* trg)
+	{
+		source = src;
+		target = trg;
+	}
+	~CollisionInfo()
+	{
+		
+	}
+
+	GameObject* source;
+	GameObject* target;
 };
 
 #endif

@@ -17,6 +17,8 @@ Player::Player() : LATERAL_ACCELERATION(500.0f), BOUNDS_LEFT(20), BOUNDS_RIGHT(5
 	}
 	
 	mCollision = new CollisionModel(10.0f);
+	mCollision->parent = this;
+	mCollision->setCollidesWith(CollisionFlags::OBSTACLE | CollisionFlags::SCORE);
 	mCollision->setCollisionType(CollisionFlags::PLAYER);
 }
 

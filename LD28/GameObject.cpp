@@ -22,15 +22,26 @@ GameObject::~GameObject(void)
 {
 }
 
-unsigned int GameObject::getCollisionFlags()
+unsigned int GameObject::getCollisionType()
 {
 	return mCollision->collisionType;
 }
 
-bool GameObject::checkCollisionFlags(CollisionFlags flagToCheck)
+bool GameObject::checkCollisionType(unsigned int flagToCheck)
 {
 	return ((mCollision->collisionType & flagToCheck) == flagToCheck);
 }
+
+unsigned int GameObject::getCollidesWith()
+{
+	return mCollision->collidesWith;
+}
+
+bool GameObject::checkCollidesWith(unsigned int flagToCheck)
+{
+	return ((mCollision->collidesWith & flagToCheck) == flagToCheck);
+}
+
 
 void GameObject::update(float delta)
 {

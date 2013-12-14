@@ -21,8 +21,8 @@ public:
 	// The parent gameobject
 	GameObject* parent;
 
-	void setCollisionType(CollisionFlags inFlags){ collisionType = collisionType | inFlags;}
-	void setCollidesWith(CollisionFlags inFlags){ collidesWith = collidesWith | inFlags;}
+	void setCollisionType(unsigned int inFlags){ collisionType = collisionType | inFlags;}
+	void setCollidesWith(unsigned int inFlags){ collidesWith = collidesWith | inFlags;}
 	bool isColliding(CollisionModel& other);
 	sf::CircleShape mCollisionDebug;
 

@@ -18,6 +18,7 @@ Bonus::Bonus(void)
 
 	// Set up the collision data
 	mCollision = new CollisionModel(10.0f);
+	mCollision->parent = this;
 	mCollision->setCollisionType(CollisionFlags::SCORE);
 }
 
