@@ -8,7 +8,7 @@ public:
 	Screen(void);
 	~Screen(void);
 
-	void update(sf::Time delta);
-	void draw(sf::RenderWindow& window);
+	virtual void update(sf::Time& delta);
+	virtual void draw(sf::RenderWindow& window);
 };
 
