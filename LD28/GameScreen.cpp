@@ -28,7 +28,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	DEBUGTEXT.setCharacterSize(10);
 	DEBUGTEXT.setStyle(sf::Text::Regular);
 	DEBUGTEXT.setColor(sf::Color::Green);
-	DEBUGTEXT.setPosition(5.0f, 0.0f);
+	DEBUGTEXT.setPosition(5.0f, 10.0f);
 
 	mScoreText.setCharacterSize(12);
 	mScoreText.setStyle(sf::Text::Regular);

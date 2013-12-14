@@ -10,6 +10,11 @@
 
 int main (int argc, char* argv[])
 {
+	// For determining FPS
+	float FPS = 0.0f;
+	int frames = 0;
+	sf::Clock fpsTimer;
+
 	// Set up the window
 	sf::RenderWindow window(sf::VideoMode(500,700), "LD28");
 
@@ -19,13 +24,13 @@ int main (int argc, char* argv[])
 	
 	sf::Time delta;
 
-	/*sf::Font DEBUGFONT;
+	sf::Font DEBUGFONT;
 	DEBUGFONT.loadFromFile("assets/fonts/UbuntuMono.ttf");
-	sf::Text text("Debug",  DEBUGFONT);
-	text.setCharacterSize(16);
-	text.setStyle(sf::Text::Bold);
-	text.setColor(sf::Color::Green);
-	*/
+	sf::Text FPSText("FPS",  DEBUGFONT);
+	FPSText.setCharacterSize(10);
+	FPSText.setStyle(sf::Text::Regular);
+	FPSText.setColor(sf::Color::Green);
+	
 	// Build the screen stack
 	std::stack<Screen*> screens;
 
@@ -40,6 +45,18 @@ int main (int argc, char* argv[])
 	{
 		delta = tick.restart();
 		float deltaTime = delta.asSeconds();
+
+		++frames;
+		// Calculate the FPS if it's been 1 second
+		if(fpsTimer.getElapsedTime().asMilliseconds() > 1000.0f)
+		{
+			int timepassed = fpsTimer.getElapsedTime().asMilliseconds();
+			FPS = 1000.0f / (float)((float)timepassed / (float)frames);
+			// Set it to the FPS string
+			FPSText.setString(std::to_string((FPS)));
+			frames = 0;
+			fpsTimer.restart();
+		}
 		
 		// Do polling for events (like close window)
 		while(window.pollEvent(event))
@@ -64,6 +81,7 @@ int main (int argc, char* argv[])
 		// Update the first screen
 		screens.top()->update(deltaTime);
 		screens.top()->draw(window);
+		window.draw(FPSText);
 		window.display();
 	}
 
