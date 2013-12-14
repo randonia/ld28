@@ -1,6 +1,8 @@
 #pragma once
 #include "gameobject.hpp"
 #include <SFML\Graphics.hpp>
+#include <math.h>
+
 class Player :
 	public GameObject
 {
@@ -18,10 +20,13 @@ public:
 	void update(float delta) override;
 	void draw(sf::RenderWindow& window) override;
 
-	const float LATERALSPEED;
 
+	const float LATERALSPEED;
+	const float MAX_LATERAL_SPEED;
 	// The lateral boundaries that the player can't go past
 	const int BOUNDS_LEFT;
 	const int BOUNDS_RIGHT;
+
+	const float DAMPENING_CONST;
 };
 
