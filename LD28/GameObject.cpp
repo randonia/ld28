@@ -39,7 +39,7 @@ unsigned int GameObject::getCollidesWith()
 
 bool GameObject::checkCollidesWith(unsigned int flagToCheck)
 {
-	return ((mCollision->collidesWith & flagToCheck) == flagToCheck);
+	return (flagToCheck != CollisionFlags::NONE) && ((mCollision->collidesWith & flagToCheck) == flagToCheck);
 }
 
 
