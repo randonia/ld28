@@ -188,6 +188,11 @@ void GameScreen::deathTick(float delta)
 			// into a renderables list, and a gameobjects list, but for jam, not necessary
 			mGameObjects.push_back(tPart);
 		}
+
+		// Now hide the player so it doesn't render anymore
+		// Another reason to use the renderables list and not the gameobjects list :/
+		std::remove(std::begin(mGameObjects), std::end(mGameObjects),player);
+
 	}
 
 	// Meow update them all
@@ -205,8 +210,11 @@ void GameScreen::sendKey(sf::Keyboard::Key key)
 	switch(key)
 	{
 	case sf::Keyboard::P:
-		// Toggle pausing
-		mState = (mState == GameState::PAUSED)?GameState::PLAYING:GameState::PAUSED;
+		// Toggle pausing IFF the state is playing or paused
+		if(mState == GameState::PAUSED || mState == GameState::PLAYING)
+		{
+			mState = (mState == GameState::PAUSED)?GameState::PLAYING:GameState::PAUSED;
+		}
 		break;
 	default:
 		break;
