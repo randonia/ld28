@@ -50,6 +50,14 @@ int main (int argc, char* argv[])
 			{
 				window.close();
 			}
+			// Split these up because they're different events
+			if(event.type == sf::Event::KeyPressed)
+			{
+				if(event.key.code == sf::Keyboard::Escape)
+				{
+					window.close();
+				}
+			}
 		}
 
 		// Update the first screen
