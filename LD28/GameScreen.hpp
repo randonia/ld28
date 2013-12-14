@@ -1,10 +1,14 @@
 #pragma once
+
 #include "Screen.hpp"
+#include "GameObject.hpp"
 class GameScreen : public Screen
 {
 public:
 	GameScreen(void);
 	~GameScreen(void);
+
+	std::vector<GameObject*> mGameObjects;
 
 	void update(sf::Time& delta) override;
 	void draw(sf::RenderWindow& window) override;
