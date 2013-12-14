@@ -19,13 +19,13 @@ int main (int argc, char* argv[])
 	
 	sf::Time delta;
 
-	sf::Font DEBUGFONT;
+	/*sf::Font DEBUGFONT;
 	DEBUGFONT.loadFromFile("assets/fonts/UbuntuMono.ttf");
 	sf::Text text("Debug",  DEBUGFONT);
 	text.setCharacterSize(16);
 	text.setStyle(sf::Text::Bold);
 	text.setColor(sf::Color::Green);
-
+	*/
 	// Build the screen stack
 	std::stack<Screen*> screens;
 
@@ -60,9 +60,11 @@ int main (int argc, char* argv[])
 			}
 		}
 
+		window.clear(sf::Color::Black);
 		// Update the first screen
 		screens.top()->update(deltaTime);
 		screens.top()->draw(window);
+		window.display();
 	}
 
 	return 0;

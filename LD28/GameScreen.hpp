@@ -24,5 +24,9 @@ public:
 	const float GRAVITY;
 	// The maxiumum speed a player can fall
 	const float MAX_FALL_VELOCITY;
+	const float MIN_FALL_VELOCITY;
+
+	sf::Font DEBUGFONT;
+	sf::Text DEBUGTEXT;
 };
 
