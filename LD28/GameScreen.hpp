@@ -8,6 +8,13 @@
 #include "Bonus.hpp"
 #include "Obstacle.hpp"
 
+enum GameState
+{
+	PAUSED,
+	PLAYING,
+	GAMEOVER
+};
+
 class GameScreen : public Screen
 {
 public:
@@ -37,7 +44,11 @@ public:
 	// Displays the score on the right side
 	sf::Text mScoreText;
 
+	GameState mState;
 
 	int mPlayerScore;
+private:
+	// Handles the game PLAYING state logic
+	void gameTick(float delta);
 };
 

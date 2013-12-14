@@ -2,8 +2,8 @@
 
 
 GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_FALL_VELOCITY(150.0f),
-	mPlayerScore(0),
-	DEBUGFONT(), DEBUGTEXT("DEBUG", DEBUGFONT), mScoreText("Score", DEBUGFONT)
+	mPlayerScore(0), mState(GameState::PLAYING),
+	DEBUGFONT(), DEBUGTEXT("DEBUG", DEBUGFONT), mScoreText("Score: 0", DEBUGFONT)
 {
 	this->mID = "GameScreen";
 	mFallSpeed = 0.0f;
@@ -48,6 +48,23 @@ GameScreen::~GameScreen(void)
 }
 
 void GameScreen::update(float delta)
+{
+	switch (mState)
+	{
+	case PAUSED:
+		break;
+	case PLAYING:
+		gameTick(delta);
+		break;
+	case GAMEOVER:
+		break;
+	default:
+		break;
+	}
+	
+}
+
+void GameScreen::gameTick(float delta)
 {
 	// Update the falling speed
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -145,6 +162,7 @@ void GameScreen::update(float delta)
 		++itor;
 	}
 }
+
 
 void GameScreen::draw(sf::RenderWindow& window)
 {
