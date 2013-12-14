@@ -3,7 +3,7 @@
 
 Screen::Screen(void)
 {
-	this->ID = "Empty Screen";
+	this->mID = "Empty Screen";
 }
 
 

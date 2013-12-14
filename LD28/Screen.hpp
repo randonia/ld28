@@ -15,6 +15,6 @@ public:
 	virtual void draw(sf::RenderWindow& window);
 protected:
 	// An identification string for debugging purposes
-	std::string ID;
+	std::string mID;
 };
 

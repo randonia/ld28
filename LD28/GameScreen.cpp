@@ -3,7 +3,7 @@
 
 GameScreen::GameScreen(void)
 {
-	this->ID = "GameScreen";
+	this->mID = "GameScreen";
 }
 
 
