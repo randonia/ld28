@@ -16,7 +16,7 @@ enum CollisionFlags : unsigned int
 	NONE = 0,
 	PLAYER = 1,
 	SCORE = 2,
-	OBSTACLE = 3
+	OBSTACLE = 4
 };
 
 class GameObject
