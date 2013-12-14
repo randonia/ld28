@@ -26,10 +26,12 @@ void Player::update(float delta)
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
 	{
 		velocity.x -= LATERALSPEED;
+		sprite.setScale(-1.0f,1.0f);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
 	{
 		velocity.x += LATERALSPEED;
+		sprite.setScale(1.0f,1.0f);
 	}
 
 	position += velocity * delta;
