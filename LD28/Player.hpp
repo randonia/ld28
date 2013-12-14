@@ -18,7 +18,6 @@ public:
 	void update(float delta) override;
 	void draw(sf::RenderWindow& window) override;
 
-	const float GRAVITY;
-	const float MAX_FALL_VELOCITY;
+	const float LATERALSPEED;
 };
 

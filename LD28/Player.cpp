@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player() : GRAVITY(9.8f), MAX_FALL_VELOCITY(10.0f)
+Player::Player() : LATERALSPEED(0.25f)
 {
 	// Load the texture
 	if(!texture.loadFromFile("assets/images/player/player.png"))
@@ -23,14 +23,16 @@ void Player::update(float delta)
 {
 	GameObject::update(delta);
 
-	// Be affected by gravity
-	velocity.y += delta * GRAVITY;
-	if(velocity.y >= MAX_FALL_VELOCITY)
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
 	{
-		velocity.y = MAX_FALL_VELOCITY;
+		velocity.x -= LATERALSPEED;
+	}
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+	{
+		velocity.x += LATERALSPEED;
 	}
 
-	position += velocity;
+	position += velocity * delta;
 
 	// Move the sprite to the location of this player
 	sprite.setPosition(position);
