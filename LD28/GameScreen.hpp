@@ -6,6 +6,7 @@
 #include "CollisionModel.hpp"
 #include "Player.hpp"
 #include "Bonus.hpp"
+#include "Obstacle.hpp"
 
 class GameScreen : public Screen
 {

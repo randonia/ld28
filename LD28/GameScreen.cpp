@@ -24,6 +24,12 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 		bonus->position.y = 500.0f + i * 150.0f;
 	}
 
+	// Add some obstacles
+	Obstacle* obs = new Obstacle();
+	obs->position.x = 250;
+	obs->position.y = 600;
+	mGameObjects.push_back(obs);
+
 	DEBUGFONT.loadFromFile("assets/fonts/UbuntuMono.ttf");
 	DEBUGTEXT.setCharacterSize(10);
 	DEBUGTEXT.setStyle(sf::Text::Regular);
@@ -101,6 +107,8 @@ void GameScreen::update(float delta)
 		switch (currPod->source->getCollisionType())
 		{
 		case CollisionFlags::OBSTACLE:
+			std::cout << "Obstacle hit! Kill the player" << std::endl;
+			// TODO: Change the game state to kill the player and end the game
 			break;
 		case CollisionFlags::PLAYER:
 			if(currPod->target->checkCollisionType(CollisionFlags::SCORE))
