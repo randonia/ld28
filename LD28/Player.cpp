@@ -1,8 +1,8 @@
 #include "Player.hpp"
 #include "CollisionModel.hpp"
 
-Player::Player() : LATERALSPEED(150.0f), BOUNDS_LEFT(20), BOUNDS_RIGHT(500 - 20), 
-	MAX_LATERAL_SPEED(250.0f), DAMPENING_CONST(0.65f)
+Player::Player() : LATERAL_ACCELERATION(500.0f), BOUNDS_LEFT(20), BOUNDS_RIGHT(500 - 20), 
+	MAX_LATERAL_SPEED(250.0f), DAMPENING_CONST(0.75f)
 {
 	mID = "Player";
 	// Load the texture
@@ -32,13 +32,13 @@ void Player::update(float delta)
 	bool skipDampening = false;
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
 	{
-		velocity.x -= LATERALSPEED * delta;
+		velocity.x -= LATERAL_ACCELERATION * delta;
 		sprite.setScale(-1.0f,1.0f);
 		skipDampening = true;
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
 	{
-		velocity.x += LATERALSPEED * delta;
+		velocity.x += LATERAL_ACCELERATION * delta;
 		sprite.setScale(1.0f,1.0f);
 		skipDampening = true;
 	}

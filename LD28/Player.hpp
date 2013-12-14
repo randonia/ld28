@@ -21,7 +21,7 @@ public:
 	void draw(sf::RenderWindow& window) override;
 
 
-	const float LATERALSPEED;
+	const float LATERAL_ACCELERATION;
 	const float MAX_LATERAL_SPEED;
 	// The lateral boundaries that the player can't go past
 	const int BOUNDS_LEFT;
