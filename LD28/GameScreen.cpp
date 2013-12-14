@@ -2,7 +2,8 @@
 
 
 GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_FALL_VELOCITY(150.0f),
-	DEBUGFONT(), DEBUGTEXT("DEBUG", DEBUGFONT)
+	mPlayerScore(0),
+	DEBUGFONT(), DEBUGTEXT("DEBUG", DEBUGFONT), mScoreText("Score", DEBUGFONT)
 {
 	this->mID = "GameScreen";
 	mFallSpeed = 0.0f;
@@ -13,9 +14,10 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 
 	// Add some bonuses
 	Bonus* bonus;
-	for(int i = 0; i < 50; ++i)
+	for(int i = 0; i < 150; ++i)
 	{
 		bonus = new Bonus();
+		bonus->name = "Bonus " + std::to_string(i);
 		mGameObjects.push_back(bonus);
 
 		bonus->position.x = rand() % 450 + 25;
@@ -27,6 +29,11 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	DEBUGTEXT.setStyle(sf::Text::Regular);
 	DEBUGTEXT.setColor(sf::Color::Green);
 	DEBUGTEXT.setPosition(5.0f, 0.0f);
+
+	mScoreText.setCharacterSize(12);
+	mScoreText.setStyle(sf::Text::Regular);
+	mScoreText.setColor(sf::Color::White);
+	mScoreText.setPosition(400.0f, 10.0f);
 }
 
 
@@ -99,6 +106,9 @@ void GameScreen::update(float delta)
 			if(currPod->target->checkCollisionType(CollisionFlags::SCORE))
 			{
 				std::cout << "Player scored" << std::endl;
+				++mPlayerScore;
+				// Update the score text
+				mScoreText.setString("Score: " + std::to_string(mPlayerScore));
 				// Use the Erase-remove idiom to remove the bonus
 				std::remove(std::begin(mGameObjects), std::end(mGameObjects),currPod->target);
 				// and destroy it
@@ -137,4 +147,5 @@ void GameScreen::draw(sf::RenderWindow& window)
 	}
 
 	window.draw(DEBUGTEXT);
+	window.draw(mScoreText);
 }

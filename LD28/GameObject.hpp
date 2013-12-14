@@ -45,6 +45,8 @@ public:
 	// The CollisionModel this gameobject uses
 	CollisionModel * mCollision;
 	
+	// The name (not the ID) of this object
+	std::string name;
 
 protected:
 	// The debug id

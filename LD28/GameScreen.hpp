@@ -32,5 +32,11 @@ public:
 
 	sf::Font DEBUGFONT;
 	sf::Text DEBUGTEXT;
+
+	// Displays the score on the right side
+	sf::Text mScoreText;
+
+
+	int mPlayerScore;
 };
 
