@@ -8,7 +8,7 @@ Obstacle::Obstacle(void)
 	// Load the texture
 	if(!texture.loadFromFile("assets/images/obstacle/obstacle.png"))
 	{
-		std::cerr << "Error loading player texture" << std::endl;
+		std::cerr << "Error loading obstacle texture" << std::endl;
 	}
 	else
 	{
