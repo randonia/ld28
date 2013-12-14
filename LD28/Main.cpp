@@ -5,6 +5,7 @@
 #include <SFML\Graphics.hpp>
 
 #include "Screen.hpp"
+#include "GameScreen.hpp"
 
 
 int main (int argc, char* argv[])
@@ -26,9 +27,14 @@ int main (int argc, char* argv[])
 	text.setColor(sf::Color::Green);
 
 	// Build the screen stack
-	std::stack<Screen> screens;
+	std::stack<Screen*> screens;
 
 	sf::Event event;
+
+	// Build the first screen here
+	// TODO: Make this start in the game screen!
+	GameScreen* game = new GameScreen();
+	screens.push(game);
 
 	while(window.isOpen())
 	{
@@ -46,8 +52,8 @@ int main (int argc, char* argv[])
 		}
 
 		// Update the first screen
-		screens.top().update(delta);
-		screens.top().draw(window);
+		screens.top()->update(delta);
+		screens.top()->draw(window);
 	}
 
 	return 0;
