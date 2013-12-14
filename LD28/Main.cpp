@@ -39,6 +39,7 @@ int main (int argc, char* argv[])
 	// Build the first screen here
 	// TODO: Make this start in the game screen!
 	GameScreen* game = new GameScreen();
+	game->mPollingWindow = &window;
 	screens.push(game);
 
 	while(window.isOpen())
@@ -70,9 +71,15 @@ int main (int argc, char* argv[])
 			// Split these up because they're different events
 			if(event.type == sf::Event::KeyPressed)
 			{
-				if(event.key.code == sf::Keyboard::Escape)
+				switch (event.key.code)
 				{
+				case sf::Keyboard::Escape:
 					window.close();
+					break;
+				default:
+					// Send the key to the top screen
+					screens.top()->sendKey(event.key.code);
+					break;
 				}
 			}
 		}

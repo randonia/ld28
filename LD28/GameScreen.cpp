@@ -163,6 +163,18 @@ void GameScreen::gameTick(float delta)
 	}
 }
 
+void GameScreen::sendKey(sf::Keyboard::Key key)
+{
+	switch(key)
+	{
+	case sf::Keyboard::P:
+		// Toggle pausing
+		mState = (mState == GameState::PAUSED)?GameState::PLAYING:GameState::PAUSED;
+		break;
+	default:
+		break;
+	}
+}
 
 void GameScreen::draw(sf::RenderWindow& window)
 {

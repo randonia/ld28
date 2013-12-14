@@ -13,6 +13,12 @@ public:
 	virtual void update(float delta);
 	// The 'draw' phase. Draws everything to the window
 	virtual void draw(sf::RenderWindow& window);
+	// Use this to send keys to the screens. That way multi-polling doesn't have to occur
+	virtual void sendKey(sf::Keyboard::Key key);
+
+	// Be able to set a reference to the window for polling events
+	sf::RenderWindow* mPollingWindow;
+	sf::Event mPollEvent;
 protected:
 	// An identification string for debugging purposes
 	std::string mID;

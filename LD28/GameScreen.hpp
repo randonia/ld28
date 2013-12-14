@@ -31,6 +31,7 @@ public:
 
 	void update(float delta) override;
 	void draw(sf::RenderWindow& window) override;
+	void sendKey(sf::Keyboard::Key key) override;
 
 	// The gravity. Used to accelerate FallSpeed
 	const float GRAVITY;
