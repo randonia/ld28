@@ -3,6 +3,7 @@
 #include "Screen.hpp"
 #include "GameObject.hpp"
 #include "Player.hpp"
+#include "Bonus.hpp"
 
 class GameScreen : public Screen
 {

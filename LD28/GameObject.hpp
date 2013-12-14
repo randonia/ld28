@@ -31,16 +31,18 @@ public:
 	virtual void update(float delta);
 	virtual void draw(sf::RenderWindow& window);
 	
-	CollisionFlags getCollisionFlags();
+	unsigned int getCollisionFlags();
 	// Returns true if the given flag exists
 	bool checkCollisionFlags(CollisionFlags flagToCheck);
+	
+	// The CollisionModel this gameobject uses
+	CollisionModel * mCollision;
+	
 
 protected:
 	// The debug id
 	std::string mID;
-	// The CollisionModel this gameobject uses
-	CollisionModel * mCollision;
-	
+
 	// The shape to draw to the renderwindow
 	sf::CircleShape center;
 };

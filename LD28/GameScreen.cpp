@@ -4,10 +4,17 @@
 GameScreen::GameScreen(void) : GRAVITY(9.8f), MAX_FALL_VELOCITY(20.0f)
 {
 	this->mID = "GameScreen";
+	mFallSpeed = 0.0f;
 
 	// Make the player
 	player = new Player();
 	mGameObjects.push_back(player);
+
+	// Add some bonuses
+	Bonus* bonus = new Bonus();
+	mGameObjects.push_back(bonus);
+	bonus->position.x = 350.0f;
+	bonus->position.y = 500.0f;
 }
 
 

@@ -178,3 +178,6 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
+
+# .diff files made by me
+*.diff

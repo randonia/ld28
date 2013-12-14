@@ -14,13 +14,7 @@ GameObject::GameObject(void)
 	
 	// Set up the collision model
 	const float RADIUS = 15.0f;
-	mCollision = new CollisionModel();
-	mCollision->radius = RADIUS;
-	mCollision->mCollisionDebug = sf::CircleShape(RADIUS);
-	mCollision->mCollisionDebug.setOrigin(RADIUS, RADIUS);
-	mCollision->mCollisionDebug.setFillColor(sf::Color::Transparent);
-	mCollision->mCollisionDebug.setOutlineColor(sf::Color::Red);
-	mCollision->mCollisionDebug.setOutlineThickness(1.0f);
+	mCollision = new CollisionModel(RADIUS);
 }
 
 
@@ -28,7 +22,7 @@ GameObject::~GameObject(void)
 {
 }
 
-CollisionFlags GameObject::getCollisionFlags()
+unsigned int GameObject::getCollisionFlags()
 {
 	return mCollision->collisionType;
 }

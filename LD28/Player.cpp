@@ -1,7 +1,9 @@
 #include "Player.hpp"
+#include "CollisionModel.hpp"
 
 Player::Player() : LATERALSPEED(0.25f)
 {
+	mID = "Player";
 	// Load the texture
 	if(!texture.loadFromFile("assets/images/player/player.png"))
 	{
@@ -12,6 +14,9 @@ Player::Player() : LATERALSPEED(0.25f)
 		sprite.setTexture(texture);
 		sprite.setOrigin(texture.getSize().x * 0.5f, texture.getSize().y * 0.5f);
 	}
+	
+	mCollision = new CollisionModel(10.0f);
+	mCollision->setCollisionType(CollisionFlags::PLAYER);
 }
 
 
