@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClCompile Include="Bonus.cpp" />
     <ClCompile Include="CollisionModel.cpp" />
+    <ClCompile Include="DeathParticle.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -90,6 +91,7 @@
   <ItemGroup>
     <ClInclude Include="Bonus.hpp" />
     <ClInclude Include="CollisionModel.hpp" />
+    <ClInclude Include="DeathParticle.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="GameScreen.hpp" />
     <ClInclude Include="Obstacle.hpp" />

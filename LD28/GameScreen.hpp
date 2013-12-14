@@ -7,6 +7,7 @@
 #include "Player.hpp"
 #include "Bonus.hpp"
 #include "Obstacle.hpp"
+#include "DeathParticle.hpp"
 
 enum GameState
 {
@@ -51,5 +52,10 @@ public:
 private:
 	// Handles the game PLAYING state logic
 	void gameTick(float delta);
+	// Handles the game playing the DEATH logic
+	void deathTick(float delta);
+
+	// Death animation things
+	std::vector<GameObject*> mDeathObjects;
 };
 

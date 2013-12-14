@@ -57,6 +57,7 @@ void GameScreen::update(float delta)
 		gameTick(delta);
 		break;
 	case GAMEOVER:
+		deathTick(delta);
 		break;
 	default:
 		break;
@@ -125,7 +126,8 @@ void GameScreen::gameTick(float delta)
 		{
 		case CollisionFlags::OBSTACLE:
 			std::cout << "Obstacle hit! Kill the player" << std::endl;
-			// TODO: Change the game state to kill the player and end the game
+			// Change the game state to gameover man, game over!
+			mState = GameState::GAMEOVER;
 			break;
 		case CollisionFlags::PLAYER:
 			if(currPod->target->checkCollisionType(CollisionFlags::SCORE))
@@ -163,6 +165,41 @@ void GameScreen::gameTick(float delta)
 	}
 }
 
+void GameScreen::deathTick(float delta)
+{
+	// If death hasn't been initialized (ie: the death animation hasn't started) start it
+	if(mDeathObjects.size() == 0)
+	{
+		// This is a list of directions.  Basically it's an array of Vectors without the overhead
+		int numDirs = 8;
+		// Start pointing straight right, then spiral around clockwise
+		int xDir[] = { 1, 1, 0,-1,-1,-1, 0, 1};
+		int yDir[] = { 0, 1, 1, 1, 0,-1,-1,-1};
+		float velocity = 50.0f;
+		DeathParticle* tPart;
+		// Build a bunch of death particles
+		for(int i = 0; i < 16; ++i)
+		{
+			tPart = new DeathParticle(xDir[i % numDirs], yDir[i % numDirs], velocity * ((i > numDirs*0.5)?2:1));
+			tPart->position.x = player->position.x;
+			tPart->position.y = player->position.y;
+			mDeathObjects.push_back(tPart);
+			// Push it to GameObjects to automagically handle drawing. This should probably be extracted
+			// into a renderables list, and a gameobjects list, but for jam, not necessary
+			mGameObjects.push_back(tPart);
+		}
+	}
+
+	// Meow update them all
+	for(std::vector<GameObject*>::iterator itor = mDeathObjects.begin(); 
+		itor != mDeathObjects.end();
+		++itor)
+	{
+		(*itor)->update(delta);
+	}
+
+}
+
 void GameScreen::sendKey(sf::Keyboard::Key key)
 {
 	switch(key)
@@ -183,7 +220,6 @@ void GameScreen::draw(sf::RenderWindow& window)
 	{
 		mGameObjects[i]->draw(window);
 	}
-
 	window.draw(DEBUGTEXT);
 	window.draw(mScoreText);
 }
