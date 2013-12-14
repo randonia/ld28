@@ -5,9 +5,9 @@ GameScreen::GameScreen(void)
 {
 	this->mID = "GameScreen";
 
-	// Add a debug game object
-	GameObject* newObject = new GameObject();
-	mGameObjects.push_back(newObject);
+	// Make the player
+	player = new Player();
+	mGameObjects.push_back(player);
 }
 
 
