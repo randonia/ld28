@@ -11,6 +11,14 @@
 // For forward declaration issue :/
 struct CollisionModel;
 
+enum CollisionFlags : unsigned int
+{
+	NONE = 0,
+	PLAYER = 1,
+	SCORE = 2,
+	OBSTACLE = 3
+};
+
 class GameObject
 {
 public:
@@ -23,6 +31,10 @@ public:
 	virtual void update(float delta);
 	virtual void draw(sf::RenderWindow& window);
 	
+	CollisionFlags getCollisionFlags();
+	// Returns true if the given flag exists
+	bool checkCollisionFlags(CollisionFlags flagToCheck);
+
 protected:
 	// The debug id
 	std::string mID;

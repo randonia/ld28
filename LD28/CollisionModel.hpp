@@ -6,14 +6,6 @@
 #include <SFML\System\Vector2.hpp>
 #include "GameObject.hpp"
 
-enum CollisionFlags : unsigned int
-{
-	NONE = 0,
-	PLAYER = 1,
-	SCORE = 2,
-	OBSTACLE = 3
-};
-
 struct CollisionModel
 {
 public:
@@ -27,6 +19,8 @@ public:
 	float radius;
 	// The parent gameobject
 	GameObject* parent;
+
+	sf::CircleShape mCollisionDebug;
 	
 	bool isColliding(CollisionModel& other);
 protected:

@@ -1,7 +1,7 @@
 #include "GameScreen.hpp"
 
 
-GameScreen::GameScreen(void)
+GameScreen::GameScreen(void) : GRAVITY(9.8f), MAX_FALL_VELOCITY(20.0f)
 {
 	this->mID = "GameScreen";
 
@@ -17,9 +17,23 @@ GameScreen::~GameScreen(void)
 
 void GameScreen::update(float delta)
 {
+	// Update the falling speed
+	mFallSpeed += GRAVITY * delta;
+	if(mFallSpeed >= MAX_FALL_VELOCITY)
+	{
+		mFallSpeed = MAX_FALL_VELOCITY;
+	}
+
+	GameObject* currObj;
 	for(int i = 0; i < mGameObjects.size(); ++i)
 	{
-		mGameObjects[i]->update(delta);
+		currObj = mGameObjects[i];
+		// If the given gameobject isn't the player, push it with gravity
+		if(!currObj->checkCollisionFlags(CollisionFlags::PLAYER))
+		{
+			currObj->position.y -= mFallSpeed * delta;
+		}
+		currObj->update(delta);
 	}
 }
 

@@ -44,5 +44,7 @@ void Player::draw(sf::RenderWindow& window)
 {
 	// Draw the sprite
 	window.draw(sprite);
-	window.draw(center);
+
+	// Draw the base for debugging
+	GameObject::draw(window);
 }
