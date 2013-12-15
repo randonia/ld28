@@ -1,19 +1,22 @@
 #pragma once
 #include "screen.hpp"
-#include "GameScreen.hpp"
-#include "HelpScreen.hpp"
-
-class TitleScreen :
+class HelpScreen :
 	public Screen
 {
 public:
-	TitleScreen(void);
-	~TitleScreen(void);
-
+	HelpScreen(void);
+	~HelpScreen(void);
+	
 	void update(float delta) override;
 	void draw(sf::RenderTarget& window) override;
 
-	sf::Texture mMenuTexture;
+	sf::Texture mHelp1;
+	sf::Texture mHelp2;
 	sf::Sprite mMenuSprite;
+
+	bool mLeftReleased;
+	bool mRightReleased;
+
+	int mCurrHelpFrame;
 };
 

@@ -51,6 +51,6 @@ void GameObject::update(float delta)
 
 void GameObject::draw(sf::RenderTarget& window)
 {
-	window.draw(center);
-	window.draw(mCollision->mCollisionDebug);
+	//window.draw(center);
+	//window.draw(mCollision->mCollisionDebug);
 }
