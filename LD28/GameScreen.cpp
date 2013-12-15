@@ -25,10 +25,14 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	}
 
 	// Add some obstacles
-	Obstacle* obs = new Obstacle();
-	obs->position.x = 250;
-	obs->position.y = 600;
-	addGameObject(obs);
+	Obstacle* obs;
+	for(int o = 0; o < 25; ++o)
+	{
+		obs = new Obstacle();
+		obs->position.x = 25 + rand() % 400;
+		obs->position.y = (rand() % 100 + 250 * (o + 2));
+		addGameObject(obs);
+	}
 
 	// Add some clouds
 	Cloud* tCloud;	
