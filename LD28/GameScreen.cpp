@@ -1,11 +1,11 @@
 #include "GameScreen.hpp"
 
 
-GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_FALL_VELOCITY(150.0f),
-	mPlayerScore(0), mState(GameState::PLAYING), bgverts(sf::Quads,4),
+GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_VELOCITY(150.0f),
+	mPlayerScore(0), SCORE_VALUE(500), mState(GameState::PLAYING), bgverts(sf::Quads,4),
 	bgUpStartColor(76,201,255), bgUpEndColor(54,141,178), bgDownStartColor(61,161,204), bgDownEndColor(42,111,140),
 	mFont_ubuntu(), DEBUGTEXT("DEBUG", mFont_ubuntu), mScoreText("Score: 0", mFont_ubuntu),
-	DBG_FALLSPEED(0),DBG_TRAVELED(1)
+	DBG_FALLSPEED(0),DBG_TRAVELED(1), DBG_PLAYER_YVEL(2)
 {
 	this->mID = "GameScreen";
 	mFallSpeed = 0.0f;
@@ -97,9 +97,10 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	DEBUGTEXT.setColor(sf::Color::Black);
 	DEBUGTEXT.setPosition(5.0f, 10.0f);
 
-	DEBUGLABELS = new std::pair<std::string, float>[2];
+	DEBUGLABELS = new std::pair<std::string, float>[3];
 	DEBUGLABELS[DBG_FALLSPEED] = std::make_pair("Fallspeed: ", 0.0f);
 	DEBUGLABELS[DBG_TRAVELED] = std::make_pair("Distance Traveled: ", 0.0f);
+	DEBUGLABELS[DBG_PLAYER_YVEL] = std::make_pair("Player Y Velocity: ", 0.0f);
 }
 
 
@@ -127,9 +128,10 @@ void GameScreen::update(float delta)
 	// Update the debug data
 	DEBUGLABELS[DBG_FALLSPEED].second = mFallSpeed;
 	DEBUGLABELS[DBG_TRAVELED].second = mLevelTraveled;
+	DEBUGLABELS[DBG_PLAYER_YVEL].second = player->velocity.y;
 
 	std::string dbgResult = "";
-	for(int i = 0; i < 2; ++i)
+	for(int i = 0; i < 3; ++i)
 	{
 		dbgResult += DEBUGLABELS[i].first + std::to_string(DEBUGLABELS[i].second) + "\n";
 	}
@@ -223,9 +225,7 @@ void GameScreen::gameTick(float delta)
 			if(currPod->target->checkCollisionType(CollisionFlags::SCORE))
 			{
 				std::cout << "Player scored" << std::endl;
-				++mPlayerScore;
-				// Update the score text
-				mScoreText.setString("Score: " + std::to_string(mPlayerScore));
+				mPlayerScore += SCORE_VALUE;
 				// Use the Erase-remove idiom to remove the bonus
 				removeGameObject(currPod->target);
 				// and destroy it
@@ -262,6 +262,9 @@ void GameScreen::gameTick(float delta)
 
 	// Move the marker forward!
 	mLevelTraveled += mFallSpeed * delta;
+	mPlayerScore += (2 * mFallSpeed - MIN_FALL_VELOCITY) * delta;
+	// Update the score text
+	mScoreText.setString("Score: " + std::to_string(mPlayerScore));
 	mMiniMap->updateMarker(mLevelTraveled / mLevelDistance);
 }
 

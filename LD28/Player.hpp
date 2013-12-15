@@ -48,7 +48,9 @@ public:
 
 
 	const float LATERAL_ACCELERATION;
+	const float VERTICAL_ACCELERATION;
 	const float MAX_LATERAL_SPEED;
+	const float MAX_VERTICAL_SPEED;
 	const float PARACHUTE_LATERAL_SPEED;
 
 	// The lateral boundaries that the player can't go past

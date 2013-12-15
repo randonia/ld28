@@ -55,7 +55,10 @@ public:
 	// some debug consts to display and modify the debug data
 	const int DBG_FALLSPEED;
 	const int DBG_TRAVELED;
+	const int DBG_PLAYER_YVEL;
 
+	// How much one of the score powerups is worth
+	const int SCORE_VALUE;
 
 	// Displays the score on the right side
 	sf::Text mScoreText;

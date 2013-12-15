@@ -1,9 +1,9 @@
 #include "Player.hpp"
 #include "CollisionModel.hpp"
 
-Player::Player() : LATERAL_ACCELERATION(500.0f), 
+Player::Player() : LATERAL_ACCELERATION(500.0f), VERTICAL_ACCELERATION(150.0f),
 	BOUNDS_LEFT(20), BOUNDS_RIGHT(500 - 20), BOUNDS_UP(50), BOUNDS_DOWN(250),
-	MAX_LATERAL_SPEED(250.0f), DAMPENING_CONST(0.75f), 
+	MAX_LATERAL_SPEED(250.0f), MAX_VERTICAL_SPEED(100.0f), DAMPENING_CONST(0.75f), 
 	mChuteState(ParachuteState::CLOSED), CHUTE_DEPLOY_TIME(1000.0f), CHUTE_LIFE_TIME(5000.0f), PARACHUTE_LATERAL_SPEED(100.0f)
 {
 	mID = "Player";
@@ -105,6 +105,20 @@ void Player::chuteClosedTick(float delta)
 		sprite.setScale(1.0f,1.0f);
 		skipDampening = true;
 	}
+	// Do lots of dampening on the up/down velocity
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		velocity.y += VERTICAL_ACCELERATION * delta;
+	}
+	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		velocity.y -= VERTICAL_ACCELERATION * delta;
+	}
+	else
+	{
+		velocity.y = pow((0.15), delta) * velocity.y;
+	}
+
 	// Deploy the chute if the player hits space
 	if(mChuteState == ParachuteState::CLOSED && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
@@ -126,6 +140,14 @@ void Player::chuteClosedTick(float delta)
 	if(velocity.x >= MAX_LATERAL_SPEED)
 	{
 		velocity.x = MAX_LATERAL_SPEED;
+	}
+	if(velocity.y <= -MAX_VERTICAL_SPEED)
+	{
+		velocity.y = -MAX_VERTICAL_SPEED;
+	}
+	if(velocity.y >= MAX_VERTICAL_SPEED)
+	{
+		velocity.y = MAX_VERTICAL_SPEED;
 	}
 
 	// Apply dampening if it should be (based on keyboard input)
