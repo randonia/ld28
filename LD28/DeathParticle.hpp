@@ -27,5 +27,6 @@ public:
 
 	// Basically the Y accelerator
 	float mDropSpeed;
+	float mRot;
 };
 
