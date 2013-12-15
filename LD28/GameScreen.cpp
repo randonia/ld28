@@ -122,7 +122,7 @@ void GameScreen::resetLevel()
 {
 	// First re-initialize all the shit in the gamescreen constructor
 	mState = GameState::PLAYING;
-	mFallSpeed = 0.0f;
+	//mFallSpeed = 0.0f;
 
 	// Pwn out all the gameobjects
 	while(mGameObjects.size() > 0)
@@ -227,6 +227,23 @@ GameScreen::~GameScreen(void)
 
 void GameScreen::update(float delta)
 {
+	// Check for pausing because polling events blow
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+	{
+		if(mPauseReleased)
+		{
+			if(mState == GameState::PAUSED || mState == GameState::PLAYING)
+			{
+				mState = (mState == GameState::PAUSED)?GameState::PLAYING:GameState::PAUSED;
+			}
+		}
+		mPauseReleased = false;
+	}
+	else
+	{
+		mPauseReleased = true;
+	}
+
 	switch (mState)
 	{
 	case PAUSED:

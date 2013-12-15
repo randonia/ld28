@@ -113,5 +113,9 @@ private:
 	GameObject* removeGameObject(GameObject* goBye);
 
 	MiniMap* mMiniMap;
+
+	// Use this to prevent "pause holding" so to speak. Because no one
+	// presses a key in <1/60th of a second
+	bool mPauseReleased;
 };
 

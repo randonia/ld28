@@ -84,20 +84,11 @@ int main (int argc, char* argv[])
 			{
 				window.close();
 			}
-			// Split these up because they're different events
-			if(event.type == sf::Event::KeyPressed)
-			{
-				switch (event.key.code)
-				{
-				case sf::Keyboard::Escape:
-					window.close();
-					break;
-				default:
-					// Send the key to the top screen
-					screens.top()->sendKey(event.key.code);
-					break;
-				}
-			}
+		}
+		// Split these up because they're different events
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			window.close();
 		}
 
 		window.clear(sf::Color::Black);

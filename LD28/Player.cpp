@@ -198,8 +198,8 @@ void Player::reset()
 	mChuteState = ParachuteState::CLOSED;
 	sprite.setTexture(mFallTexture, true);
 	sprite.setOrigin(16.0f,16.0f);
-	position = sf::Vector2<float>(0.0f,0.0f);
-	velocity = sf::Vector2<float>(0.0f,0.0f);
+	position = sf::Vector2<float>(position.x ,0.0f);
+	velocity = sf::Vector2<float>(velocity.x ,0.0f);
 	mRenderingEnabled = true;
 }
 
