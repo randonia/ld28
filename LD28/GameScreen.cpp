@@ -15,8 +15,8 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	addGameObject(player);
 
 	// Initialize some basic level data
-	mLevelDistance = 1000.0f;
 	mLevelTraveled = 0.0f;
+	mLevelDistance = 10000.0f;
 
 	// Build the background verts (for the changing background)
 	bgverts[0] = sf::Vertex(sf::Vector2<float>(0.0f,0.0f), bgUpStartColor);
@@ -55,6 +55,10 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 		tCloud->position.y = (rand() % 100 * c);
 		addRenderable(tCloud);
 	}
+
+	// Build the minimap
+	mMiniMap = new MiniMap();
+
 	
 	// ******** Font dealings *********
 
@@ -213,6 +217,7 @@ void GameScreen::gameTick(float delta)
 
 	// Move the marker forward!
 	mLevelTraveled += mFallSpeed * delta;
+	mMiniMap->updateMarker(mLevelTraveled / mLevelDistance);
 }
 
 void GameScreen::deathTick(float delta)
@@ -281,6 +286,7 @@ void GameScreen::draw(sf::RenderTarget& window)
 	{
 		(*drawtor)->draw(window);
 	}
+	mMiniMap->draw(window);
 	window.draw(DEBUGTEXT);
 	window.draw(mScoreText);
 }

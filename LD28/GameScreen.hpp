@@ -9,6 +9,7 @@
 #include "Obstacle.hpp"
 #include "DeathParticle.hpp"
 #include "Cloud.hpp"
+#include "MiniMap.hpp"
 
 enum GameState
 {
@@ -92,5 +93,7 @@ private:
 	// for collision
 	GameObject* addGameObject(GameObject* go);
 	GameObject* removeGameObject(GameObject* goBye);
+
+	MiniMap* mMiniMap;
 };
 
