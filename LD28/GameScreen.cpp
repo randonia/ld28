@@ -2,7 +2,7 @@
 
 
 GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_VELOCITY(150.0f),
-	mPlayerScore(0), SCORE_VALUE(500), mState(GameState::PLAYING), bgverts(sf::Quads,4),
+	mPlayerScore(0), SCORE_VALUE(500), mState(GameState::PLAYING), bgverts(sf::Quads,4), SAVED_STATE_DELAY(1500.0f),
 	bgUpStartColor(76,201,255), bgUpEndColor(54,141,178), bgDownStartColor(61,161,204), bgDownEndColor(42,111,140),
 	mFont_ubuntu(), DEBUGTEXT("DEBUG", mFont_ubuntu), mScoreText("Score: 0", mFont_ubuntu),
 	DBG_FALLSPEED(0),DBG_TRAVELED(1), DBG_PLAYER_YVEL(2)
@@ -101,10 +101,10 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	mFont_ubuntu.loadFromFile("assets/fonts/UbuntuMono.ttf");
 
 	// Display the score
-	mScoreText.setCharacterSize(12);
+	mScoreText.setCharacterSize(14);
 	mScoreText.setStyle(sf::Text::Regular);
 	mScoreText.setColor(sf::Color::Blue);
-	mScoreText.setPosition(400.0f, 10.0f);
+	mScoreText.setPosition(360.0f, 10.0f);
 
 
 	DEBUGTEXT.setCharacterSize(10);
@@ -481,7 +481,15 @@ void GameScreen::landingTick(float delta)
 
 void GameScreen::savedTick(float delta)
 {
-	// Do some animating or something.
+	// If the delay has expired, add the score graphic on screen
+	if(mSaveTimer.getElapsedTime().asMilliseconds() > SAVED_STATE_DELAY)
+	{
+		HighScoreScreen* highscore = new HighScoreScreen(mPlayerScore);
+		highscore->fAddScreen = fAddScreen;
+		highscore->fRemoveScreen = fRemoveScreen;
+		fRemoveScreen();
+		fAddScreen(highscore);
+	}
 }
 
 void GameScreen::nextLevelTick(float delta)
@@ -529,6 +537,8 @@ void GameScreen::runCollisionChecks()
 		{
 		case CollisionFlags::OBSTACLE:
 			std::cout << "Obstacle hit! Kill the player" << std::endl;
+			player->velocity.x = 0.0f;
+			player->velocity.y = 0.0f;
 			// Change the game state to gameover man, game over!
 			mState = GameState::GAMEOVER;
 			break;
@@ -560,6 +570,7 @@ void GameScreen::runCollisionChecks()
 					// They are safe! Woo hoo!
 					std::cout << "Player has safely landed! Woo" << std::endl;
 					mState = GameState::SAVED;
+					mSaveTimer.restart();
 				default:
 					break;
 				}

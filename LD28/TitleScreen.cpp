@@ -25,8 +25,9 @@ void TitleScreen::update(float delta)
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 	{
-		fRemoveScreen();
 		GameScreen* screen = new GameScreen();
+		screen->fAddScreen = fAddScreen;
+		screen->fRemoveScreen = fRemoveScreen;
 		fAddScreen(screen);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::H))

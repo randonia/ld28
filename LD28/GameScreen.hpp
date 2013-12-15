@@ -11,6 +11,7 @@
 #include "Cloud.hpp"
 #include "MiniMap.hpp"
 #include "Ground.hpp"
+#include "HighScoreScreen.hpp"
 
 enum GameState
 {
@@ -117,5 +118,9 @@ private:
 	// Use this to prevent "pause holding" so to speak. Because no one
 	// presses a key in <1/60th of a second
 	bool mPauseReleased;
+
+	// Used for timing the savetick window
+	sf::Clock mSaveTimer;
+	const float SAVED_STATE_DELAY;
 };
 

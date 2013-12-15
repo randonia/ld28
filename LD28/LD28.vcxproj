@@ -86,6 +86,7 @@
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HelpScreen.cpp" />
+    <ClCompile Include="HighScoreScreen.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Obstacle.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="GameScreen.hpp" />
     <ClInclude Include="Ground.hpp" />
     <ClInclude Include="HelpScreen.hpp" />
+    <ClInclude Include="HighScoreScreen.hpp" />
     <ClInclude Include="MiniMap.hpp" />
     <ClInclude Include="Obstacle.hpp" />
     <ClInclude Include="Player.hpp" />
