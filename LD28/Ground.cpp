@@ -12,10 +12,10 @@ Ground::Ground(void)
 	else
 	{
 		sprite.setTexture(texture);
-		sprite.setOrigin(texture.getSize().x * 0.5f, texture.getSize().y * 0.5f);
+		sprite.setOrigin(texture.getSize().x * 0.5f, 16.0f);
 	}
 	
-	mCollision = new CollisionModel(10.0f);
+	mCollision = new CollisionModel(20.0f);
 	mCollision->parent = this;
 	mCollision->setCollidesWith(CollisionFlags::PLAYER);
 	mCollision->setCollisionType(CollisionFlags::GROUND);

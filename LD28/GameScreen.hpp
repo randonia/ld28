@@ -16,6 +16,7 @@ enum GameState
 {
 	PAUSED,
 	PLAYING,
+	LANDING,
 	GAMEOVER
 };
 
@@ -76,6 +77,10 @@ private:
 	void gameTick(float delta);
 	// Handles the game playing the DEATH logic
 	void deathTick(float delta);
+	// Handles the game where the player is landing (aka: has reached the end)
+	void landingTick(float delta);
+
+	void runCollisionChecks();
 
 	// This is the game's background. It will gradually change based on
 	// how close you are to the end

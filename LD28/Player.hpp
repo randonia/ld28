@@ -54,10 +54,10 @@ public:
 	const float PARACHUTE_LATERAL_SPEED;
 
 	// The lateral boundaries that the player can't go past
-	const int BOUNDS_LEFT;
-	const int BOUNDS_RIGHT;
-	const int BOUNDS_UP;
-	const int BOUNDS_DOWN;
+	static const int BOUNDS_LEFT = 20;
+	static const int BOUNDS_RIGHT = 500 - 70;
+	static const int BOUNDS_UP = 50;
+	static const int BOUNDS_DOWN = 250;
 
 	const float DAMPENING_CONST;
 

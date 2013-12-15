@@ -66,12 +66,27 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
 	}
 
-	// Add the ground
+	// Add the ground. Basically make it a straight line, except in the middle.
+	// 5 on the left, 5 on the right
 	Ground* tGround;
-	tGround = new Ground();
-	tGround->position.x = 200;
-	tGround->position.y = 500;
-	addGameObject(tGround);
+	const int groundY = mLevelDistance + 550.0f;
+	//const int groundY = 350;
+
+	for(int g = 0; g < 5; ++g)
+	{
+		// Make the left side
+		tGround = new Ground();
+		tGround->position.x = 16 + g * 32;
+		//tGround->position.y = mLevelDistance + 250.0f;
+		tGround->position.y = groundY;
+		addGameObject(tGround);
+
+		// Meow make the right side
+		tGround = new Ground();
+		tGround->position.x = 450 - (16 + g * 32);
+		tGround->position.y = groundY;
+		addGameObject(tGround);
+	}
 
 
 	// Build the minimap
@@ -117,6 +132,9 @@ void GameScreen::update(float delta)
 		break;
 	case PLAYING:
 		gameTick(delta);
+		break;
+	case LANDING:
+		landingTick(delta);
 		break;
 	case GAMEOVER:
 		deathTick(delta);
@@ -182,6 +200,110 @@ void GameScreen::gameTick(float delta)
 
 	DEBUGTEXT.setString("Fall Speed: " + std::to_string(mFallSpeed) + "\nFoo");
 
+	// Do Collision processing
+	runCollisionChecks();
+	
+	GameObject* currObj;
+
+	// If we're at the end of the level, change game states
+	if(mLevelTraveled > mLevelDistance)
+	{
+		mState = GameState::LANDING;
+	}
+	// Now update each gameobject. Delete it if it no longer should exist
+	for(std::vector<GameObject*>::iterator itor = mRenderables.begin(); itor != mRenderables.end();)
+	{
+		currObj = (*itor);
+		// If the given gameobject isn't the player, push it with gravity
+		if(!currObj->checkCollisionType(CollisionFlags::PLAYER))
+		{
+			currObj->position.y -= mFallSpeed * delta;
+		}
+		currObj->update(delta);
+		// Iterate if all is well
+		++itor;
+	}
+
+	// Do a player bounce check
+	// Do a bounce check
+	if(player->position.x <= Player::BOUNDS_LEFT)
+	{
+		// Bounce
+		player->velocity.x *= -1;
+		// and move them a bit
+		player->position.x = Player::BOUNDS_LEFT;
+	}
+	if(player->position.x >= Player::BOUNDS_RIGHT)
+	{
+		player->velocity.x *= -1;
+		player->position.x = Player::BOUNDS_RIGHT;
+	}
+	if(player->position.y <= Player::BOUNDS_UP)
+	{
+		player->position.y = Player::BOUNDS_UP;
+	}
+	if(player->position.y >= Player::BOUNDS_DOWN)
+	{
+		player->position.y = Player::BOUNDS_DOWN;
+	}
+
+	// Move the marker forward!
+	mLevelTraveled += mFallSpeed * delta;
+	mPlayerScore += (2 * mFallSpeed - MIN_FALL_VELOCITY) * delta;
+	
+	// Update the score text
+	mScoreText.setString("Score: " + std::to_string(mPlayerScore));
+	mMiniMap->updateMarker(mLevelTraveled / mLevelDistance);
+}
+
+void GameScreen::deathTick(float delta)
+{
+	// If death hasn't been initialized (ie: the death animation hasn't started) start it
+	if(mDeathObjects.size() == 0)
+	{
+		// This is a list of directions.  Basically it's an array of Vectors without the overhead
+		int numDirs = 8;
+		// Start pointing straight right, then spiral around clockwise
+		int xDir[] = { 1, 1, 0,-1,-1,-1, 0, 1};
+		int yDir[] = { 0, 1, 1, 1, 0,-1,-1,-1};
+		float velocity = 50.0f;
+		DeathParticle* tPart;
+		// Build a bunch of death particles
+		for(int i = 0; i < 33; ++i)
+		{
+			tPart = new DeathParticle(xDir[i % numDirs], yDir[i % numDirs], velocity * (i + 1)/ numDirs);
+			tPart->position.x = player->position.x;
+			tPart->position.y = player->position.y;
+			mDeathObjects.push_back(tPart);
+			// Push it to GameObjects to automagically handle drawing. This should probably be extracted
+			// into a renderables list, and a gameobjects list, but for jam, not necessary
+			addRenderable(tPart);
+		}
+
+		// Now hide the player so it doesn't render anymore
+		// Another reason to use the renderables list and not the gameobjects list :/
+		removeGameObject(player);
+
+	}
+
+	// Meow update them all
+	for(std::vector<GameObject*>::iterator itor = mDeathObjects.begin(); 
+		itor != mDeathObjects.end();
+		++itor)
+	{
+		(*itor)->update(delta);
+	}
+
+}
+
+void GameScreen::landingTick(float delta)
+{
+	player->position.y += mFallSpeed * delta;
+	player->update(delta);
+}
+
+void GameScreen::runCollisionChecks()
+{
 	GameObject* currObj;
 	GameObject* otherObj;
 
@@ -245,67 +367,6 @@ void GameScreen::gameTick(float delta)
 		}
 		mCollidedObjects.pop();
 	}
-	
-	// Now update each gameobject. Delete it if it no longer should exist
-	for(std::vector<GameObject*>::iterator itor = mRenderables.begin(); itor != mRenderables.end();)
-	{
-		currObj = (*itor);
-		// If the given gameobject isn't the player, push it with gravity
-		if(!currObj->checkCollisionType(CollisionFlags::PLAYER))
-		{
-			currObj->position.y -= mFallSpeed * delta;
-		}
-		currObj->update(delta);
-		// Iterate if all is well
-		++itor;
-	}
-
-	// Move the marker forward!
-	mLevelTraveled += mFallSpeed * delta;
-	mPlayerScore += (2 * mFallSpeed - MIN_FALL_VELOCITY) * delta;
-	// Update the score text
-	mScoreText.setString("Score: " + std::to_string(mPlayerScore));
-	mMiniMap->updateMarker(mLevelTraveled / mLevelDistance);
-}
-
-void GameScreen::deathTick(float delta)
-{
-	// If death hasn't been initialized (ie: the death animation hasn't started) start it
-	if(mDeathObjects.size() == 0)
-	{
-		// This is a list of directions.  Basically it's an array of Vectors without the overhead
-		int numDirs = 8;
-		// Start pointing straight right, then spiral around clockwise
-		int xDir[] = { 1, 1, 0,-1,-1,-1, 0, 1};
-		int yDir[] = { 0, 1, 1, 1, 0,-1,-1,-1};
-		float velocity = 50.0f;
-		DeathParticle* tPart;
-		// Build a bunch of death particles
-		for(int i = 0; i < 33; ++i)
-		{
-			tPart = new DeathParticle(xDir[i % numDirs], yDir[i % numDirs], velocity * (i + 1)/ numDirs);
-			tPart->position.x = player->position.x;
-			tPart->position.y = player->position.y;
-			mDeathObjects.push_back(tPart);
-			// Push it to GameObjects to automagically handle drawing. This should probably be extracted
-			// into a renderables list, and a gameobjects list, but for jam, not necessary
-			addRenderable(tPart);
-		}
-
-		// Now hide the player so it doesn't render anymore
-		// Another reason to use the renderables list and not the gameobjects list :/
-		removeGameObject(player);
-
-	}
-
-	// Meow update them all
-	for(std::vector<GameObject*>::iterator itor = mDeathObjects.begin(); 
-		itor != mDeathObjects.end();
-		++itor)
-	{
-		(*itor)->update(delta);
-	}
-
 }
 
 void GameScreen::sendKey(sf::Keyboard::Key key)

@@ -2,7 +2,6 @@
 #include "CollisionModel.hpp"
 
 Player::Player() : LATERAL_ACCELERATION(500.0f), VERTICAL_ACCELERATION(150.0f),
-	BOUNDS_LEFT(20), BOUNDS_RIGHT(500 - 20), BOUNDS_UP(50), BOUNDS_DOWN(250),
 	MAX_LATERAL_SPEED(250.0f), MAX_VERTICAL_SPEED(100.0f), DAMPENING_CONST(0.75f), 
 	mChuteState(ParachuteState::CLOSED), CHUTE_DEPLOY_TIME(1000.0f), CHUTE_LIFE_TIME(5000.0f), PARACHUTE_LATERAL_SPEED(100.0f)
 {
@@ -64,27 +63,8 @@ void Player::update(float delta)
 		break;
 	}
 	
-	// Do a bounce check
-	if(position.x <= BOUNDS_LEFT)
-	{
-		// Bounce
-		velocity.x *= -1;
-		// and move them a bit
-		position.x = BOUNDS_LEFT;
-	}
-	if(position.x >= BOUNDS_RIGHT)
-	{
-		velocity.x *= -1;
-		position.x = BOUNDS_RIGHT;
-	}
-	if(position.y <= BOUNDS_UP)
-	{
-		position.y = BOUNDS_UP;
-	}
-	if(position.y >= BOUNDS_DOWN)
-	{
-		position.y = BOUNDS_DOWN;
-	}
+	// I had to move the bounce check outside of Player and into GameScreen::update.
+	// ... because of reasons....
 
 	// Move the sprite to the location of this player
 	sprite.setPosition(position);
