@@ -10,7 +10,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 
 	// Make the player
 	player = new Player();
-	mGameObjects.push_back(player);
+	addGameObject(player);
 
 	// Add some bonuses
 	Bonus* bonus;
@@ -18,7 +18,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	{
 		bonus = new Bonus();
 		bonus->name = "Bonus " + std::to_string(i);
-		mGameObjects.push_back(bonus);
+		addGameObject(bonus);
 
 		bonus->position.x = rand() % 450 + 25;
 		bonus->position.y = 500.0f + i * 150.0f;
@@ -28,17 +28,17 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	Obstacle* obs = new Obstacle();
 	obs->position.x = 250;
 	obs->position.y = 600;
-	mGameObjects.push_back(obs);
+	addGameObject(obs);
 
 	// Add some clouds
-	/*Cloud* tCloud;	
+	Cloud* tCloud;	
 	for(int c = 0; c < 200; ++c)
 	{
 		tCloud = new Cloud();
 		tCloud->position.x = rand() % 500;
 		tCloud->position.y = (rand() % 100 * c);
-		mGameObjects.push_back(tCloud);
-	}*/
+		addRenderable(tCloud);
+	}
 
 	// Load some debug text
 	DEBUGFONT.loadFromFile("assets/fonts/UbuntuMono.ttf");
@@ -148,7 +148,7 @@ void GameScreen::gameTick(float delta)
 				// Update the score text
 				mScoreText.setString("Score: " + std::to_string(mPlayerScore));
 				// Use the Erase-remove idiom to remove the bonus
-				mGameObjects.erase(std::remove(std::begin(mGameObjects), std::end(mGameObjects),currPod->target));
+				removeGameObject(currPod->target);
 				// and destroy it
 				delete(currPod->target);
 			}
@@ -162,7 +162,7 @@ void GameScreen::gameTick(float delta)
 	}
 	
 	// Now update each gameobject. Delete it if it no longer should exist
-	for(std::vector<GameObject*>::iterator itor = mGameObjects.begin(); itor != mGameObjects.end();)
+	for(std::vector<GameObject*>::iterator itor = mRenderables.begin(); itor != mRenderables.end();)
 	{
 		currObj = (*itor);
 		// If the given gameobject isn't the player, push it with gravity
@@ -197,12 +197,12 @@ void GameScreen::deathTick(float delta)
 			mDeathObjects.push_back(tPart);
 			// Push it to GameObjects to automagically handle drawing. This should probably be extracted
 			// into a renderables list, and a gameobjects list, but for jam, not necessary
-			mGameObjects.push_back(tPart);
+			addRenderable(tPart);
 		}
 
 		// Now hide the player so it doesn't render anymore
 		// Another reason to use the renderables list and not the gameobjects list :/
-		mGameObjects.erase(std::remove(std::begin(mGameObjects), std::end(mGameObjects),player));
+		removeGameObject(player);
 
 	}
 
@@ -235,10 +235,39 @@ void GameScreen::sendKey(sf::Keyboard::Key key)
 void GameScreen::draw(sf::RenderWindow& window)
 {
 	// Do draw shit here
-	for(int i = 0; i < mGameObjects.size(); ++i)
+	for(std::vector<GameObject*>::iterator drawtor = mRenderables.begin();
+		drawtor != mRenderables.end();
+		++drawtor)
 	{
-		mGameObjects[i]->draw(window);
+		(*drawtor)->draw(window);
 	}
 	window.draw(DEBUGTEXT);
 	window.draw(mScoreText);
+}
+
+GameObject* GameScreen::addRenderable(GameObject* renderMe)
+{
+	mRenderables.push_back(renderMe);
+	return renderMe;
+}
+
+GameObject*  GameScreen::removeRenderable(GameObject* dontRenderMe)
+{
+	mRenderables.erase(std::remove(std::begin(mRenderables), std::end(mRenderables), dontRenderMe));
+	return dontRenderMe;
+}
+
+GameObject*  GameScreen::addGameObject(GameObject* go)
+{
+	// Use the built in code
+	addRenderable(go);
+	mGameObjects.push_back(go);
+	return go;
+}
+
+GameObject*  GameScreen::removeGameObject(GameObject* goBye)
+{
+	removeRenderable(goBye);
+	mGameObjects.erase(std::remove(std::begin(mGameObjects), std::end(mGameObjects), goBye));
+	return goBye;
 }

@@ -24,6 +24,10 @@ public:
 	~GameScreen(void);
 
 	std::vector<GameObject*> mGameObjects;
+	std::vector<GameObject*> mRenderables;
+	// Death animation things
+	std::vector<GameObject*> mDeathObjects;
+
 	// Used for collision checking
 	std::queue<CollisionInfo*> mCollidedObjects;
 
@@ -56,7 +60,13 @@ private:
 	// Handles the game playing the DEATH logic
 	void deathTick(float delta);
 
-	// Death animation things
-	std::vector<GameObject*> mDeathObjects;
+	// Adds a RENDERABLE which is ignored by 
+	// the collision system completely
+	GameObject* addRenderable(GameObject* renderMe);
+	GameObject* removeRenderable(GameObject* dontRenderMe);
+	// Adds a GameObject, which is both rendered AND considered
+	// for collision
+	GameObject* addGameObject(GameObject* go);
+	GameObject* removeGameObject(GameObject* goBye);
 };
 
