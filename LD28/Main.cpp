@@ -39,7 +39,6 @@ int main (int argc, char* argv[])
 	// Build the first screen here
 	// TODO: Make this start in the game screen!
 	GameScreen* game = new GameScreen();
-	game->mPollingWindow = &window;
 	screens.push(game);
 
 	while(window.isOpen())

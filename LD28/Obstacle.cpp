@@ -33,7 +33,7 @@ void Obstacle::update(float delta)
 	sprite.setPosition(position);
 };
 
-void Obstacle::draw(sf::RenderWindow& window)
+void Obstacle::draw(sf::RenderTarget& window)
 {
 	window.draw(sprite);
 

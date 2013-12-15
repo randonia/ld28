@@ -81,7 +81,7 @@ void Player::update(float delta)
 	sprite.setPosition(position);
 }
 
-void Player::draw(sf::RenderWindow& window)
+void Player::draw(sf::RenderTarget& window)
 {
 	// Draw the sprite
 	window.draw(sprite);

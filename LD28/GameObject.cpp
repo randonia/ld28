@@ -49,7 +49,7 @@ void GameObject::update(float delta)
 	mCollision->mCollisionDebug.setPosition(position);
 }
 
-void GameObject::draw(sf::RenderWindow& window)
+void GameObject::draw(sf::RenderTarget& window)
 {
 	window.draw(center);
 	window.draw(mCollision->mCollisionDebug);

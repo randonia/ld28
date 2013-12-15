@@ -36,7 +36,7 @@ void DeathParticle::update(float delta)
 	sprite.setPosition(position);
 }
 
-void DeathParticle::draw(sf::RenderWindow& window)
+void DeathParticle::draw(sf::RenderTarget& window)
 {
 	window.draw(sprite);
 	GameObject::draw(window);

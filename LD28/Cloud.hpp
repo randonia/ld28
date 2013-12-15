@@ -11,6 +11,6 @@ public:
 	sf::Sprite sprite;
 
 	void update(float delta) override;
-	void draw(sf::RenderWindow& window) override;
+	void draw(sf::RenderTarget& window) override;
 };
 

@@ -36,7 +36,7 @@ public:
 	float mFallSpeed;
 
 	void update(float delta) override;
-	void draw(sf::RenderWindow& window) override;
+	void draw(sf::RenderTarget& window) override;
 	void sendKey(sf::Keyboard::Key key) override;
 
 	// The gravity. Used to accelerate FallSpeed

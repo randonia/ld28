@@ -18,12 +18,11 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	mLevelDistance = 1000.0f;
 	mLevelTraveled = 0.0f;
 
-
 	// Build the background verts (for the changing background)
-	bgverts[0] = sf::Vertex(sf::Vector2<float>(0.0f,0.0f),bgUpStartColor);
-	bgverts[1] = sf::Vertex(sf::Vector2<float>(500.0f,0.0f),bgUpStartColor);
-	bgverts[2] = sf::Vertex(sf::Vector2<float>(500.0f,700.0f),bgDownStartColor);
-	bgverts[3] = sf::Vertex(sf::Vector2<float>(0.0f,700.0f),bgDownStartColor);
+	bgverts[0] = sf::Vertex(sf::Vector2<float>(0.0f,0.0f), bgUpStartColor);
+	bgverts[1] = sf::Vertex(sf::Vector2<float>(500.0f,0.0f), bgUpStartColor);
+	bgverts[2] = sf::Vertex(sf::Vector2<float>(500.0f,700.0f), bgDownStartColor);
+	bgverts[3] = sf::Vertex(sf::Vector2<float>(0.0f,700.0f), bgDownStartColor);
 
 	// Add some bonuses
 	Bonus* bonus;
@@ -272,7 +271,7 @@ void GameScreen::sendKey(sf::Keyboard::Key key)
 	}
 }
 
-void GameScreen::draw(sf::RenderWindow& window)
+void GameScreen::draw(sf::RenderTarget& window)
 {
 	// Do draw shit here
 	window.draw(bgverts);

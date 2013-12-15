@@ -16,7 +16,7 @@ void Screen::update(float delta)
 	
 }
 
-void Screen::draw(sf::RenderWindow& window)
+void Screen::draw(sf::RenderTarget& window)
 {
 
 }

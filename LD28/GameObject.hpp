@@ -29,7 +29,7 @@ public:
 	sf::Vector2<float> position;
 
 	virtual void update(float delta);
-	virtual void draw(sf::RenderWindow& window);
+	virtual void draw(sf::RenderTarget& window);
 	
 	// Use this to grab the flag this collides with
 	unsigned int getCollidesWith();

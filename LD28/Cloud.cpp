@@ -31,7 +31,7 @@ void Cloud::update(float delta)
 	sprite.setPosition(position);
 }
 
-void Cloud::draw(sf::RenderWindow& window)
+void Cloud::draw(sf::RenderTarget& window)
 {
 	window.draw(sprite);
 }

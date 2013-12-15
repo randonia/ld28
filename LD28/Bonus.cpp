@@ -33,7 +33,7 @@ void Bonus::update(float delta)
 	sprite.setPosition(position);
 }
 
-void Bonus::draw(sf::RenderWindow& window)
+void Bonus::draw(sf::RenderTarget& window)
 {
 	window.draw(sprite);
 	GameObject::draw(window);
