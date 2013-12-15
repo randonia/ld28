@@ -14,10 +14,12 @@
 
 enum GameState
 {
-	PAUSED,
-	PLAYING,
-	LANDING,
-	GAMEOVER
+	PAUSED, // The player hit pause
+	PLAYING, // Regular gameplay
+	LANDING, // The player is at the last part (freeze camera movement)
+	GAMEOVER, // The player died a horrible death
+	SAVED, // The player landed safely on the ground. Time to save
+	NEXTLEVEL // The player went through to the next level. Badass.
 };
 
 class GameScreen : public Screen
@@ -79,6 +81,8 @@ private:
 	void deathTick(float delta);
 	// Handles the game where the player is landing (aka: has reached the end)
 	void landingTick(float delta);
+	// Handles the game when the player has safely landed and is safe (but done)
+	void savedTick(float delta);
 
 	void runCollisionChecks();
 

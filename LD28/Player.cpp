@@ -32,7 +32,7 @@ Player::Player() : LATERAL_ACCELERATION(500.0f), VERTICAL_ACCELERATION(150.0f),
 	
 	mCollision = new CollisionModel(10.0f);
 	mCollision->parent = this;
-	mCollision->setCollidesWith(CollisionFlags::OBSTACLE | CollisionFlags::SCORE);
+	mCollision->setCollidesWith(CollisionFlags::OBSTACLE | CollisionFlags::SCORE | CollisionFlags::GROUND);
 	mCollision->setCollisionType(CollisionFlags::PLAYER);
 }
 

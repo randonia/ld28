@@ -139,6 +139,8 @@ void GameScreen::update(float delta)
 	case GAMEOVER:
 		deathTick(delta);
 		break;
+	case SAVED:
+		savedTick(delta);
 	default:
 		break;
 	}
@@ -298,8 +300,53 @@ void GameScreen::deathTick(float delta)
 
 void GameScreen::landingTick(float delta)
 {
+	// If the player's chute is open, slow their ass down
+	switch (player->mChuteState)
+	{
+	case ParachuteState::CLOSED:
+	case ParachuteState::DEPLOYING:
+		// Update the falling speed
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			mFallSpeed -= GRAVITY * delta;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			mFallSpeed += GRAVITY * delta * 2;
+		}
+		else
+		{
+			mFallSpeed += GRAVITY * delta;
+		}
+		break;
+	case ParachuteState::OPEN:
+		mFallSpeed -= GRAVITY;
+		break;
+	case ParachuteState::BONED:
+		// Get fucked
+		mFallSpeed += GRAVITY;
+	default:
+		break;
+	}
+
+	if(mFallSpeed <= MIN_FALL_VELOCITY)
+	{
+		mFallSpeed = MIN_FALL_VELOCITY;
+	}
+	if(mFallSpeed >= MAX_FALL_VELOCITY)
+	{
+		mFallSpeed = MAX_FALL_VELOCITY;
+	}
+
 	player->position.y += mFallSpeed * delta;
 	player->update(delta);
+
+	runCollisionChecks();
+}
+
+void GameScreen::savedTick(float delta)
+{
+	// Do some animating or something.
 }
 
 void GameScreen::runCollisionChecks()
@@ -357,7 +404,22 @@ void GameScreen::runCollisionChecks()
 			// Must check their parachute status
 			else if (currPod->target->checkCollisionType(CollisionFlags::GROUND))
 			{
-				// TODO: This
+				// What happens here depends on the player's parachute
+				switch (player->mChuteState)
+				{
+				case ParachuteState::CLOSED:
+				case ParachuteState::BONED:
+				case ParachuteState::DEPLOYING:
+					// Kill the player
+					mState = GameState::GAMEOVER;
+					break;
+				case ParachuteState::OPEN:
+					// They are safe! Woo hoo!
+					std::cout << "Player has safely landed! Woo" << std::endl;
+					mState = GameState::SAVED;
+				default:
+					break;
+				}
 			}
 			break;
 		case CollisionFlags::SCORE:
