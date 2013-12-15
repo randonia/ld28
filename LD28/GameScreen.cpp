@@ -121,7 +121,6 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 void GameScreen::resetLevel()
 {
 	// First re-initialize all the shit in the gamescreen constructor
-	mPlayerScore = 0;
 	mState = GameState::PLAYING;
 	mFallSpeed = 0.0f;
 
@@ -243,6 +242,10 @@ void GameScreen::update(float delta)
 		break;
 	case SAVED:
 		savedTick(delta);
+		break;
+	case NEXTLEVEL:
+		nextLevelTick(delta);
+		break;
 	default:
 		break;
 	}
@@ -367,6 +370,7 @@ void GameScreen::deathTick(float delta)
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
 		resetLevel();
+		mPlayerScore = 0;
 	}
 	else
 	{
@@ -448,13 +452,27 @@ void GameScreen::landingTick(float delta)
 
 	player->position.y += mFallSpeed * delta;
 	player->update(delta);
-
 	runCollisionChecks();
+
+	// See if the player has gone past the end of the map. If they have (and not died) then 
+	// congratulate them and restart the level preserving the score!
+	if(player->position.y > 725.0f)
+	{
+		mState = GameState::NEXTLEVEL;
+	}
 }
 
 void GameScreen::savedTick(float delta)
 {
 	// Do some animating or something.
+}
+
+void GameScreen::nextLevelTick(float delta)
+{
+	// Maybe do some fancy animation. But for now, just give them a fat score bonus 
+	// and reset the level
+	mPlayerScore += 10000.0f;
+	resetLevel();
 }
 
 void GameScreen::runCollisionChecks()

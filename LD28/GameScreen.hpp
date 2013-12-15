@@ -83,6 +83,8 @@ private:
 	void landingTick(float delta);
 	// Handles the game when the player has safely landed and is safe (but done)
 	void savedTick(float delta);
+	// Handles the game after the player has gone past the ground and not died
+	void nextLevelTick(float delta);
 
 	void runCollisionChecks();
 
