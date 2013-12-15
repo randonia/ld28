@@ -227,6 +227,16 @@ void Player::reset()
 	mRenderingEnabled = true;
 }
 
+std::string Player::chuteTimeRemaining()
+{
+	return std::to_string(chuteSecondsRemaining());
+}
+
+int Player::chuteSecondsRemaining()
+{
+	return CHUTE_LIFE_TIME * 0.001f - mChuteTimer.getElapsedTime().asSeconds();
+}
+
 void Player::draw(sf::RenderTarget& window)
 {
 	// Draw the sprite

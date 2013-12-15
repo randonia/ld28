@@ -50,6 +50,9 @@ public:
 	void setBoned();
 	void reset();
 
+	std::string chuteTimeRemaining();
+	int chuteSecondsRemaining();
+
 	const float LATERAL_ACCELERATION;
 	const float VERTICAL_ACCELERATION;
 	const float MAX_LATERAL_SPEED;

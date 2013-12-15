@@ -684,6 +684,29 @@ void GameScreen::draw(sf::RenderTarget& window)
 		mPromptText.setPosition(249.0f, 449.0f);
 		window.draw(mPromptText);
 	}
+	// Draw the prompt if the player is in parachute mode. The "ChuteRemaining"
+	else if(player->mChuteState == ParachuteState::OPEN)
+	{
+		const float offsetX = 0.0f;
+		const float offsetY = 60.0f;
+		// Update the string to show how long the chute has left
+		mPromptText.setString(player->chuteTimeRemaining());
+		mPromptText.setOrigin(mPromptText.getLocalBounds().width * 0.5f, mPromptText.getLocalBounds().height * 0.5f);
+		mPromptText.setPosition(player->position.x - offsetX, player->position.y - offsetY);
+		mPromptText.setColor(sf::Color::Black);
+		window.draw(mPromptText);
+		if(player->chuteSecondsRemaining() < 2)
+		{
+			mPromptText.setColor(sf::Color::Red);
+		}
+		else
+		{
+			mPromptText.setColor(sf::Color::White);
+		}
+		mPromptText.setPosition(player->position.x - offsetX - 1.0f, player->position.y - offsetY - 1.0f);
+		window.draw(mPromptText);
+	}
+
 	window.draw(DEBUGTEXT);
 	// Outline the score text as well
 	mScoreText.setPosition(320.0f, 10.0f);
