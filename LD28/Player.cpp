@@ -1,7 +1,8 @@
 #include "Player.hpp"
 #include "CollisionModel.hpp"
 
-Player::Player() : LATERAL_ACCELERATION(500.0f), BOUNDS_LEFT(20), BOUNDS_RIGHT(500 - 20), 
+Player::Player() : LATERAL_ACCELERATION(500.0f), 
+	BOUNDS_LEFT(20), BOUNDS_RIGHT(500 - 20), BOUNDS_UP(50), BOUNDS_DOWN(250),
 	MAX_LATERAL_SPEED(250.0f), DAMPENING_CONST(0.75f), 
 	mChuteState(ParachuteState::CLOSED), CHUTE_DEPLOY_TIME(1000.0f), CHUTE_LIFE_TIME(5000.0f), PARACHUTE_LATERAL_SPEED(100.0f)
 {
@@ -76,6 +77,14 @@ void Player::update(float delta)
 		velocity.x *= -1;
 		position.x = BOUNDS_RIGHT;
 	}
+	if(position.y <= BOUNDS_UP)
+	{
+		position.y = BOUNDS_UP;
+	}
+	if(position.y >= BOUNDS_DOWN)
+	{
+		position.y = BOUNDS_DOWN;
+	}
 
 	// Move the sprite to the location of this player
 	sprite.setPosition(position);
@@ -139,6 +148,8 @@ void Player::chuteDeployingTick(float delta)
 		mChuteState = ParachuteState::OPEN;
 		sprite.setTexture(mOpenTexture, true);
 		sprite.setOrigin(16.0f, 48.0f);
+		// Restart the timer
+		mChuteTimer.restart();
 	}
 }
 
@@ -154,7 +165,23 @@ void Player::chuteOpenTick(float delta)
 		position.x += PARACHUTE_LATERAL_SPEED * delta;
 		sprite.setScale(1.0f,1.0f);
 	}
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		position.y += 15.0f * delta;
+	}
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		position.y -= 15.0f * delta;
+	}
 
+	// See if it's time to ruin the player's day.
+	if(mChuteTimer.getElapsedTime().asMilliseconds() > CHUTE_LIFE_TIME)
+	{
+		mChuteState = ParachuteState::BONED;
+		// Change the textures
+		sprite.setTexture(mBonedTexture, true);
+		sprite.setOrigin(16.0f, 16.0f);
+	}
 }
 
 void Player::chuteBonedTick(float delta)
