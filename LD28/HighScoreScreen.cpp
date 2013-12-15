@@ -10,6 +10,14 @@ HighScoreScreen::HighScoreScreen(float score) : mFontUbuntu(), mDisplayText("Hoo
 		std::cerr << "The high score asset was missing from this" << std::endl;
 	}
 
+	// Load the bgm
+	if(!mBGM.openFromFile("assets/audio/bgscore.ogg"))
+	{
+		std::cerr << "The high score background music is missing!" << std::endl;
+	}
+	mBGM.play();
+	mBGM.setLoop(true);
+
 	mSprite.setTexture(mScoreTexture);
 	mSprite.setOrigin(mScoreTexture.getSize().x * 0.5, 0.0f);
 	mSprite.setPosition(250.0f, 0.0f);
@@ -34,6 +42,7 @@ void HighScoreScreen::update(float delta)
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
 		fRemoveScreen();
+		mBGM.stop();
 	}
 }
 

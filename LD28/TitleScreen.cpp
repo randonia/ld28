@@ -19,6 +19,7 @@ TitleScreen::TitleScreen(void)
 		std::cerr << "Unable to load the menu background track" << std::endl;
 	}
 	mBGMusic.play();
+	mBGMusic.setLoop(true);
 	
 }
 

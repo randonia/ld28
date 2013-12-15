@@ -17,5 +17,7 @@ public:
 
 	sf::Texture mScoreTexture;
 	sf::Sprite mSprite;
+
+	sf::Music mBGM;
 };
 
