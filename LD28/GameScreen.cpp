@@ -66,6 +66,14 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
 	}
 
+	// Add the ground
+	Ground* tGround;
+	tGround = new Ground();
+	tGround->position.x = 200;
+	tGround->position.y = 500;
+	addGameObject(tGround);
+
+
 	// Build the minimap
 	mMiniMap = new MiniMap();
 	mMiniMap->mDistance = maxObjectDistance;
@@ -193,6 +201,7 @@ void GameScreen::gameTick(float delta)
 			mState = GameState::GAMEOVER;
 			break;
 		case CollisionFlags::PLAYER:
+			// If the player collided with a score object, give them points
 			if(currPod->target->checkCollisionType(CollisionFlags::SCORE))
 			{
 				std::cout << "Player scored" << std::endl;
@@ -203,6 +212,12 @@ void GameScreen::gameTick(float delta)
 				removeGameObject(currPod->target);
 				// and destroy it
 				delete(currPod->target);
+			}
+			// If they collided with the ground, we must do checks to see if they're going to survive or not
+			// Must check their parachute status
+			else if (currPod->target->checkCollisionType(CollisionFlags::GROUND))
+			{
+
 			}
 			break;
 		case CollisionFlags::SCORE:

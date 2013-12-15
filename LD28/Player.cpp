@@ -2,18 +2,32 @@
 #include "CollisionModel.hpp"
 
 Player::Player() : LATERAL_ACCELERATION(500.0f), BOUNDS_LEFT(20), BOUNDS_RIGHT(500 - 20), 
-	MAX_LATERAL_SPEED(250.0f), DAMPENING_CONST(0.75f)
+	MAX_LATERAL_SPEED(250.0f), DAMPENING_CONST(0.75f), 
+	mChuteState(ParachuteState::CLOSED), CHUTE_DEPLOY_TIME(1000.0f), CHUTE_LIFE_TIME(5000.0f)
 {
 	mID = "Player";
 	// Load the texture
-	if(!texture.loadFromFile("assets/images/player/player.png"))
+	if(!mFallTexture.loadFromFile("assets/images/player/player.png"))
 	{
-		std::cerr << "Error loading player texture" << std::endl;
+		std::cerr << "Error loading player falling texture" << std::endl;
 	}
 	else
 	{
-		sprite.setTexture(texture);
-		sprite.setOrigin(texture.getSize().x * 0.5f, texture.getSize().y * 0.5f);
+		sprite.setTexture(mFallTexture);
+		sprite.setOrigin(mFallTexture.getSize().x * 0.5f, mFallTexture.getSize().y * 0.5f);
+	}
+	// Load the other textures but don't use them yet
+	if(!mDeployingTexture.loadFromFile("assets/images/player/player_chute_deploying.png"))
+	{
+		std::cerr << "Error loading player deploying texture" << std::endl;
+	}
+	if(!mOpenTexture.loadFromFile("assets/images/player/player_chute_open.png"))
+	{
+		std::cerr << "Error loading player open chute texture" << std::endl;
+	}
+	if(!mBonedTexture.loadFromFile("assets/images/player/player_chute_gone.png"))
+	{
+		std::cerr << "Error loading player boned texture texture" << std::endl;
 	}
 	
 	mCollision = new CollisionModel(10.0f);
@@ -31,6 +45,31 @@ void Player::update(float delta)
 {
 	GameObject::update(delta);
 
+	switch (mChuteState)
+	{
+	case CLOSED:
+		chuteClosedTick(delta);
+		break;
+	case DEPLOYING:
+		chuteDeployingTick(delta);
+		break;
+	case OPEN:
+		chuteOpenTick(delta);
+		break;
+	case BONED:
+		chuteBonedTick(delta);
+		break;
+	default:
+		break;
+	}
+	
+
+	// Move the sprite to the location of this player
+	sprite.setPosition(position);
+}
+
+void Player::chuteClosedTick(float delta)
+{
 	bool skipDampening = false;
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
 	{
@@ -43,6 +82,19 @@ void Player::update(float delta)
 		velocity.x += LATERAL_ACCELERATION * delta;
 		sprite.setScale(1.0f,1.0f);
 		skipDampening = true;
+	}
+	// Deploy the chute if the player hits space
+	if(mChuteState == ParachuteState::CLOSED && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		std::cout << "Deploying chute!" << std::endl;
+		mChuteState = ParachuteState::DEPLOYING;
+
+		// Change the texture out
+		sprite.setTexture(mDeployingTexture,true);
+		sprite.setOrigin(16.0f, 48.0f);
+
+		// Start the clock
+		mChuteTimer.restart();
 	}
 	// Speed checks
 	if(velocity.x <= -MAX_LATERAL_SPEED)
@@ -76,9 +128,28 @@ void Player::update(float delta)
 		velocity.x *= -1;
 		position.x = BOUNDS_RIGHT;
 	}
+}
 
-	// Move the sprite to the location of this player
-	sprite.setPosition(position);
+void Player::chuteDeployingTick(float delta)
+{
+	// Move the player while they're deploying.
+	position.y += 50.0f * delta;
+	if(mChuteTimer.getElapsedTime().asMilliseconds() > CHUTE_DEPLOY_TIME)
+	{
+		mChuteState = ParachuteState::OPEN;
+		sprite.setTexture(mOpenTexture, true);
+		sprite.setOrigin(16.0f, 48.0f);
+	}
+}
+
+void Player::chuteOpenTick(float delta)
+{
+
+}
+
+void Player::chuteBonedTick(float delta)
+{
+
 }
 
 void Player::draw(sf::RenderTarget& window)
