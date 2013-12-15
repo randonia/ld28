@@ -52,7 +52,7 @@ void HelpScreen::update(float delta)
 	{
 		mLeftReleased = true;
 	}
-	if(mCurrHelpFrame == 1 && sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::B))
 	{
 		// Remove this screen
 		fRemoveScreen();
