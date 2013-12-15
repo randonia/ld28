@@ -132,7 +132,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	mFont_ubuntu.loadFromFile("assets/fonts/UbuntuMono.ttf");
 
 	// Display the score
-	mScoreText.setCharacterSize(14);
+	mScoreText.setCharacterSize(18);
 	mScoreText.setStyle(sf::Text::Regular);
 	mScoreText.setColor(sf::Color::Blue);
 	mScoreText.setPosition(320.0f, 10.0f);
@@ -685,6 +685,12 @@ void GameScreen::draw(sf::RenderTarget& window)
 		window.draw(mPromptText);
 	}
 	window.draw(DEBUGTEXT);
+	// Outline the score text as well
+	mScoreText.setPosition(320.0f, 10.0f);
+	mScoreText.setColor(sf::Color::Black);
+	window.draw(mScoreText);
+	mScoreText.setPosition(319.0f, 9.0f);
+	mScoreText.setColor(sf::Color::White);
 	window.draw(mScoreText);
 }
 
