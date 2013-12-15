@@ -138,19 +138,37 @@ void GameScreen::update(float delta)
 
 void GameScreen::gameTick(float delta)
 {
-	// Update the falling speed
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	// This is bad, but I don't care. I'm letting the player's state
+	// dictate what happens here
+	
+	switch (player->mChuteState)
 	{
-		mFallSpeed -= GRAVITY * delta;
+	case ParachuteState::CLOSED:
+	case ParachuteState::DEPLOYING:
+		// Update the falling speed
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			mFallSpeed -= GRAVITY * delta;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			mFallSpeed += GRAVITY * delta * 2;
+		}
+		else
+		{
+			mFallSpeed += GRAVITY * delta;
+		}
+		break;
+	case ParachuteState::OPEN:
+		mFallSpeed -= GRAVITY;
+		break;
+	case ParachuteState::BONED:
+		// Get fucked
+		mFallSpeed += GRAVITY;
+	default:
+		break;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		mFallSpeed += GRAVITY * delta * 2;
-	}
-	else
-	{
-		mFallSpeed += GRAVITY * delta;
-	}
+
 	if(mFallSpeed <= MIN_FALL_VELOCITY)
 	{
 		mFallSpeed = MIN_FALL_VELOCITY;
@@ -217,7 +235,7 @@ void GameScreen::gameTick(float delta)
 			// Must check their parachute status
 			else if (currPod->target->checkCollisionType(CollisionFlags::GROUND))
 			{
-
+				// TODO: This
 			}
 			break;
 		case CollisionFlags::SCORE:

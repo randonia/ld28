@@ -3,7 +3,7 @@
 
 Player::Player() : LATERAL_ACCELERATION(500.0f), BOUNDS_LEFT(20), BOUNDS_RIGHT(500 - 20), 
 	MAX_LATERAL_SPEED(250.0f), DAMPENING_CONST(0.75f), 
-	mChuteState(ParachuteState::CLOSED), CHUTE_DEPLOY_TIME(1000.0f), CHUTE_LIFE_TIME(5000.0f)
+	mChuteState(ParachuteState::CLOSED), CHUTE_DEPLOY_TIME(1000.0f), CHUTE_LIFE_TIME(5000.0f), PARACHUTE_LATERAL_SPEED(100.0f)
 {
 	mID = "Player";
 	// Load the texture
@@ -63,6 +63,19 @@ void Player::update(float delta)
 		break;
 	}
 	
+	// Do a bounce check
+	if(position.x <= BOUNDS_LEFT)
+	{
+		// Bounce
+		velocity.x *= -1;
+		// and move them a bit
+		position.x = BOUNDS_LEFT;
+	}
+	if(position.x >= BOUNDS_RIGHT)
+	{
+		velocity.x *= -1;
+		position.x = BOUNDS_RIGHT;
+	}
 
 	// Move the sprite to the location of this player
 	sprite.setPosition(position);
@@ -115,19 +128,6 @@ void Player::chuteClosedTick(float delta)
 
 	position += velocity * delta;
 
-	// Do a bounce check
-	if(position.x <= BOUNDS_LEFT)
-	{
-		// Bounce
-		velocity.x *= -1;
-		// and move them a bit
-		position.x = BOUNDS_LEFT;
-	}
-	if(position.x >= BOUNDS_RIGHT)
-	{
-		velocity.x *= -1;
-		position.x = BOUNDS_RIGHT;
-	}
 }
 
 void Player::chuteDeployingTick(float delta)
@@ -144,6 +144,16 @@ void Player::chuteDeployingTick(float delta)
 
 void Player::chuteOpenTick(float delta)
 {
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+	{
+		position.x -= PARACHUTE_LATERAL_SPEED * delta;
+		sprite.setScale(-1.0f,1.0f);
+	}
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+	{
+		position.x += PARACHUTE_LATERAL_SPEED * delta;
+		sprite.setScale(1.0f,1.0f);
+	}
 
 }
 
