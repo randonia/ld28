@@ -3,7 +3,7 @@
 
 Ground::Ground(void)
 {
-	mID = "Player";
+	mID = "Ground";
 	// Load the texture
 	if(!texture.loadFromFile("assets/images/ground/ground.png"))
 	{
