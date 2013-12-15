@@ -45,16 +45,21 @@ public:
 	const float MAX_FALL_VELOCITY;
 	const float MIN_FALL_VELOCITY;
 
-	sf::Font DEBUGFONT;
+	sf::Font mFont_ubuntu;
 	sf::Text DEBUGTEXT;
 
 	// Displays the score on the right side
 	sf::Text mScoreText;
 
-	GameState mState;
-
-	int mPlayerScore;
 private:
+	// The following mLevelx things are used to determine the level's end zone
+	// The distance the player must travel
+	float mLevelDistance;
+	// How many units the player has traveled so far
+	float mLevelTraveled;
+
+	GameState mState;
+	int mPlayerScore;
 	// Handles the game PLAYING state logic
 	void gameTick(float delta);
 	// Handles the game playing the DEATH logic

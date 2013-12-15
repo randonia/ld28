@@ -1,5 +1,5 @@
 #include "Obstacle.hpp"
-#include "CollisionModel.hpp";
+#include "CollisionModel.hpp"
 
 
 Obstacle::Obstacle(void)

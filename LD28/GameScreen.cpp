@@ -3,7 +3,8 @@
 
 GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_FALL_VELOCITY(150.0f),
 	mPlayerScore(0), mState(GameState::PLAYING),
-	DEBUGFONT(), DEBUGTEXT("DEBUG", DEBUGFONT), mScoreText("Score: 0", DEBUGFONT)
+	mFont_ubuntu(), DEBUGTEXT("DEBUG", mFont_ubuntu), mScoreText("Score: 0", mFont_ubuntu),
+	DBG_FALLSPEED(0),DBG_TRAVELED(1)
 {
 	this->mID = "GameScreen";
 	mFallSpeed = 0.0f;
@@ -43,18 +44,25 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 		tCloud->position.y = (rand() % 100 * c);
 		addRenderable(tCloud);
 	}
+	
+	// Load the text font for text drawing
+	mFont_ubuntu.loadFromFile("assets/fonts/UbuntuMono.ttf");
 
-	// Load some debug text
-	DEBUGFONT.loadFromFile("assets/fonts/UbuntuMono.ttf");
+	// Display the score
+	mScoreText.setCharacterSize(12);
+	mScoreText.setStyle(sf::Text::Regular);
+	mScoreText.setColor(sf::Color::White);
+	mScoreText.setPosition(400.0f, 10.0f);
+
+
 	DEBUGTEXT.setCharacterSize(10);
 	DEBUGTEXT.setStyle(sf::Text::Regular);
 	DEBUGTEXT.setColor(sf::Color::Green);
 	DEBUGTEXT.setPosition(5.0f, 10.0f);
 
-	mScoreText.setCharacterSize(12);
-	mScoreText.setStyle(sf::Text::Regular);
-	mScoreText.setColor(sf::Color::White);
-	mScoreText.setPosition(400.0f, 10.0f);
+	DEBUGLABELS = new std::pair<std::string, float>[2];
+	DEBUGLABELS[DBG_FALLSPEED] = std::make_pair("Fallspeed: ", 0.0f);
+	DEBUGLABELS[DBG_TRAVELED] = std::make_pair("Distance Traveled: ", 0.0f);
 }
 
 
@@ -78,6 +86,16 @@ void GameScreen::update(float delta)
 		break;
 	}
 	
+	// Update the debug data
+	DEBUGLABELS[DBG_FALLSPEED].second = mFallSpeed;
+	DEBUGLABELS[DBG_TRAVELED].second = mLevelTraveled;
+
+	std::string dbgResult = "";
+	for(int i = 0; i < 2; ++i)
+	{
+		dbgResult += DEBUGLABELS[i].first + std::to_string(DEBUGLABELS[i].second) + "\n";
+	}
+	DEBUGTEXT.setString(dbgResult);
 }
 
 void GameScreen::gameTick(float delta)
@@ -104,7 +122,7 @@ void GameScreen::gameTick(float delta)
 		mFallSpeed = MAX_FALL_VELOCITY;
 	}
 
-	DEBUGTEXT.setString("Fall Speed: " + std::to_string(mFallSpeed));
+	DEBUGTEXT.setString("Fall Speed: " + std::to_string(mFallSpeed) + "\nFoo");
 
 	GameObject* currObj;
 	GameObject* otherObj;
