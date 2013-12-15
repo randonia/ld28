@@ -129,5 +129,7 @@ private:
 	sf::SoundBuffer mSmashBuff;
 	sf::Sound mYeah;
 	sf::SoundBuffer mYeahBuff;
+	sf::Sound mScore;
+	sf::SoundBuffer mScoreBuff;
 };
 

@@ -25,12 +25,20 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	}
 	mSmash.setBuffer(mSmashBuff);
 	
+	if(!mScoreBuff.loadFromFile("assets/audio/score.wav"))
+	{
+		std::cerr << "Unable to load score audio track" << std::endl;
+	}
+	mScore.setBuffer(mScoreBuff);
+
 	if(!mYeahBuff.loadFromFile("assets/audio/yea.ogg"))
 	{
 		std::cerr << "Unable to load yea audio track" << std::endl;
 	}
 	mYeah.setBuffer(mYeahBuff);
 	
+
+
 	// Make the player
 	player = new Player();
 	addGameObject(player);
@@ -582,6 +590,7 @@ void GameScreen::runCollisionChecks()
 			std::cout << "Obstacle hit! Kill the player" << std::endl;
 			player->velocity.x = 0.0f;
 			player->velocity.y = 0.0f;
+			mFallSpeed = 0.0f;
 			// Change the game state to gameover man, game over!
 			mState = GameState::GAMEOVER;
 			// Queue the shitty audio
@@ -593,6 +602,7 @@ void GameScreen::runCollisionChecks()
 			if(currPod->target->checkCollisionType(CollisionFlags::SCORE))
 			{
 				std::cout << "Player scored" << std::endl;
+				mScore.play();
 				mPlayerScore += SCORE_VALUE;
 				// Use the Erase-remove idiom to remove the bonus
 				removeGameObject(currPod->target);

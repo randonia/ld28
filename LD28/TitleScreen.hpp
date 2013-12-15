@@ -15,5 +15,7 @@ public:
 
 	sf::Texture mMenuTexture;
 	sf::Sprite mMenuSprite;
+
+	sf::Music mBGMusic;
 };
 
