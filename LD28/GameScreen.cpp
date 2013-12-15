@@ -2,7 +2,8 @@
 
 
 GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_FALL_VELOCITY(150.0f),
-	mPlayerScore(0), mState(GameState::PLAYING),
+	mPlayerScore(0), mState(GameState::PLAYING), bgverts(sf::Quads,4),
+	bgUpStartColor(76,201,255), bgUpEndColor(54,141,178), bgDownStartColor(61,161,204), bgDownEndColor(42,111,140),
 	mFont_ubuntu(), DEBUGTEXT("DEBUG", mFont_ubuntu), mScoreText("Score: 0", mFont_ubuntu),
 	DBG_FALLSPEED(0),DBG_TRAVELED(1)
 {
@@ -12,6 +13,17 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	// Make the player
 	player = new Player();
 	addGameObject(player);
+
+	// Initialize some basic level data
+	mLevelDistance = 1000.0f;
+	mLevelTraveled = 0.0f;
+
+
+	// Build the background verts (for the changing background)
+	bgverts[0] = sf::Vertex(sf::Vector2<float>(0.0f,0.0f),bgUpStartColor);
+	bgverts[1] = sf::Vertex(sf::Vector2<float>(500.0f,0.0f),bgUpStartColor);
+	bgverts[2] = sf::Vertex(sf::Vector2<float>(500.0f,700.0f),bgDownStartColor);
+	bgverts[3] = sf::Vertex(sf::Vector2<float>(0.0f,700.0f),bgDownStartColor);
 
 	// Add some bonuses
 	Bonus* bonus;
@@ -45,19 +57,21 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 		addRenderable(tCloud);
 	}
 	
+	// ******** Font dealings *********
+
 	// Load the text font for text drawing
 	mFont_ubuntu.loadFromFile("assets/fonts/UbuntuMono.ttf");
 
 	// Display the score
 	mScoreText.setCharacterSize(12);
 	mScoreText.setStyle(sf::Text::Regular);
-	mScoreText.setColor(sf::Color::White);
+	mScoreText.setColor(sf::Color::Blue);
 	mScoreText.setPosition(400.0f, 10.0f);
 
 
 	DEBUGTEXT.setCharacterSize(10);
 	DEBUGTEXT.setStyle(sf::Text::Regular);
-	DEBUGTEXT.setColor(sf::Color::Green);
+	DEBUGTEXT.setColor(sf::Color::Black);
 	DEBUGTEXT.setPosition(5.0f, 10.0f);
 
 	DEBUGLABELS = new std::pair<std::string, float>[2];
@@ -68,6 +82,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 
 GameScreen::~GameScreen(void)
 {
+	
 }
 
 void GameScreen::update(float delta)
@@ -196,6 +211,9 @@ void GameScreen::gameTick(float delta)
 		// Iterate if all is well
 		++itor;
 	}
+
+	// Move the marker forward!
+	mLevelTraveled += mFallSpeed * delta;
 }
 
 void GameScreen::deathTick(float delta)
@@ -257,6 +275,7 @@ void GameScreen::sendKey(sf::Keyboard::Key key)
 void GameScreen::draw(sf::RenderWindow& window)
 {
 	// Do draw shit here
+	window.draw(bgverts);
 	for(std::vector<GameObject*>::iterator drawtor = mRenderables.begin();
 		drawtor != mRenderables.end();
 		++drawtor)
