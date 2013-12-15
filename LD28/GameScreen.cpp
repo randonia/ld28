@@ -11,6 +11,26 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	this->mID = "GameScreen";
 	mFallSpeed = 0.0f;
 
+	// try loading the bgm
+	if(!mBGM.openFromFile("assets/audio/bgtrack.ogg"))
+	{
+		std::cerr << "Unable to load background audio track" << std::endl;
+	}
+	mBGM.play();
+	mBGM.setLoop(true);
+
+	if(!mSmashBuff.loadFromFile("assets/audio/smashhit.ogg"))
+	{
+		std::cerr << "Unable to load smashhit audio track" << std::endl;
+	}
+	mSmash.setBuffer(mSmashBuff);
+	
+	if(!mYeahBuff.loadFromFile("assets/audio/yea.ogg"))
+	{
+		std::cerr << "Unable to load yea audio track" << std::endl;
+	}
+	mYeah.setBuffer(mYeahBuff);
+	
 	// Make the player
 	player = new Player();
 	addGameObject(player);
@@ -225,7 +245,12 @@ void GameScreen::resetLevel()
 	mMiniMap->reset();
 	mMiniMap->mDistance = maxObjectDistance;
 
-	
+	// Resume the shitty bgm
+	mSmash.stop();
+	if(mBGM.getStatus() != sf::Music::Playing)
+	{
+		mBGM.play();
+	}
 }
 
 GameScreen::~GameScreen(void)
@@ -496,6 +521,7 @@ void GameScreen::savedTick(float delta)
 		highscore->fAddScreen = fAddScreen;
 		highscore->fRemoveScreen = fRemoveScreen;
 		fRemoveScreen();
+		mBGM.stop();
 		fAddScreen(highscore);
 	}
 }
@@ -558,6 +584,9 @@ void GameScreen::runCollisionChecks()
 			player->velocity.y = 0.0f;
 			// Change the game state to gameover man, game over!
 			mState = GameState::GAMEOVER;
+			// Queue the shitty audio
+			mBGM.pause();
+			mSmash.play();
 			break;
 		case CollisionFlags::PLAYER:
 			// If the player collided with a score object, give them points
@@ -582,10 +611,14 @@ void GameScreen::runCollisionChecks()
 				case ParachuteState::DEPLOYING:
 					// Kill the player
 					mState = GameState::GAMEOVER;
+					// Queue the shitty audio
+					mBGM.pause();
+					mSmash.play();
 					break;
 				case ParachuteState::OPEN:
 					// They are safe! Woo hoo!
 					std::cout << "Player has safely landed! Woo" << std::endl;
+					mYeah.play();
 					mState = GameState::SAVED;
 					mSaveTimer.restart();
 				default:

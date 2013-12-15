@@ -123,5 +123,11 @@ private:
 	// Used for timing the savetick window
 	sf::Clock mSaveTimer;
 	const float SAVED_STATE_DELAY;
+
+	sf::Music mBGM;
+	sf::Sound mSmash;
+	sf::SoundBuffer mSmashBuff;
+	sf::Sound mYeah;
+	sf::SoundBuffer mYeahBuff;
 };
 
