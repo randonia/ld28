@@ -97,6 +97,11 @@ private:
 	// how close you are to the end
 	sf::VertexArray bgverts;
 	
+	// The defaults for generating shit on the fly
+	const int GEN_BONUS_COUNT;
+	const int GEN_OBSTACLE_COUNT;
+	const int GEN_CLOUD_COUNT;
+
 	// The four colors. Starting and ending for the top and bottom.
 	// These colors get lerped from start to end as you get closer to the
 	// end of the level

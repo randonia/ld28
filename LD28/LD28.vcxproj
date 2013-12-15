@@ -53,7 +53,7 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)assets $(ProjectDir)Debug\assets\/H /S /E /Y</Command>
+      <Command>xcopy $(ProjectDir)assets $(ProjectDir)..\Debug\assets\/H /S /E /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,7 +74,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)assets $(ProjectDir)Release\assets\/H /S /E /Y</Command>
+      <Command>xcopy $(ProjectDir)assets $(ProjectDir)..\Release\assets\/H /S /E /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 
 
 GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_VELOCITY(150.0f),
+	GEN_BONUS_COUNT(250), GEN_OBSTACLE_COUNT(400), GEN_CLOUD_COUNT(600),
 	mPlayerScore(0), SCORE_VALUE(500), mState(GameState::PLAYING), bgverts(sf::Quads,4), SAVED_STATE_DELAY(1500.0f),
 	bgUpStartColor(76,201,255), bgUpEndColor(54,141,178), bgDownStartColor(61,161,204), bgDownEndColor(42,111,140),
 	mFont_ubuntu(), DEBUGTEXT("DEBUG", mFont_ubuntu), 
@@ -57,11 +58,11 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 
 	// Add some bonuses
 	Bonus* bonus;
-	for(int i = 0; i < 150; ++i)
+	for(int i = 0; i < GEN_BONUS_COUNT; ++i)
 	{
 		bonus = new Bonus();
 		bonus->name = "Bonus " + std::to_string(i);
-		bonus->position.x = rand() % 325 + 25;
+		bonus->position.x = rand() % 425 + 25;
 		bonus->position.y = 500.0f + i * 150.0f;
 		// Make sure we don't go too far yo
 		if(bonus->position.y > mLevelDistance) break;
@@ -73,10 +74,10 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 
 	// Add some obstacles
 	Obstacle* obs;
-	for(int o = 0; o < 150; ++o)
+	for(int o = 0; o < GEN_OBSTACLE_COUNT; ++o)
 	{
 		obs = new Obstacle();
-		obs->position.x = rand() % 325 + 25;
+		obs->position.x = rand() % 425 + 25;
 		obs->position.y = (rand() % 100 + 250 * (o + 2));
 		if(obs->position.y > mLevelDistance) break;
 		addGameObject(obs);
@@ -85,7 +86,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 
 	// Add some clouds
 	Cloud* tCloud;	
-	for(int c = 0; c < 200; ++c)
+	for(int c = 0; c < GEN_CLOUD_COUNT; ++c)
 	{
 		tCloud = new Cloud();
 		tCloud->position.x = rand() % 400;
@@ -190,11 +191,11 @@ void GameScreen::resetLevel()
 
 	// Add some bonuses
 	Bonus* bonus;
-	for(int i = 0; i < 150; ++i)
+	for(int i = 0; i < GEN_BONUS_COUNT; ++i)
 	{
 		bonus = new Bonus();
 		bonus->name = "Bonus " + std::to_string(i);
-		bonus->position.x = rand() % 325 + 25;
+		bonus->position.x = rand() % 425 + 25;
 		bonus->position.y = 500.0f + i * 150.0f;
 		// Make sure we don't go too far yo
 		if(bonus->position.y > mLevelDistance) break;
@@ -206,11 +207,11 @@ void GameScreen::resetLevel()
 
 	// Add some obstacles
 	Obstacle* obs;
-	for(int o = 0; o < 25; ++o)
+	for(int o = 0; o < GEN_OBSTACLE_COUNT; ++o)
 	{
 		obs = new Obstacle();
-		obs->position.x = rand() % 325 + 25;
-		obs->position.y = (rand() % 100 + 250 * (o + 2));
+		obs->position.x = rand() % 425 + 25;
+		obs->position.y = (rand() % 250 + 100 * (o + 2));
 		if(obs->position.y > mLevelDistance) break;
 		addGameObject(obs);
 		if(obs->position.y > maxObjectDistance) maxObjectDistance = obs->position.y;
@@ -218,10 +219,10 @@ void GameScreen::resetLevel()
 
 	// Add some clouds
 	Cloud* tCloud;	
-	for(int c = 0; c < 200; ++c)
+	for(int c = 0; c < GEN_CLOUD_COUNT; ++c)
 	{
 		tCloud = new Cloud();
-		tCloud->position.x = rand() % 400;
+		tCloud->position.x = rand() % 400 + 25;
 		tCloud->position.y = (rand() % 100 * c);
 		if(tCloud->position.y > mLevelDistance) break;
 		addRenderable(tCloud);
