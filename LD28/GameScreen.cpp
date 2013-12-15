@@ -57,6 +57,18 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 
 	float maxObjectDistance = -1.0;
 
+	// Add some clouds
+	Cloud* tCloud;	
+	for(int c = 0; c < GEN_CLOUD_COUNT; ++c)
+	{
+		tCloud = new Cloud();
+		tCloud->position.x = rand() % 400;
+		tCloud->position.y = (rand() % 100 * c);
+		if(tCloud->position.y > mLevelDistance) break;
+		addRenderable(tCloud);
+		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
+	}
+
 	// Add some bonuses
 	Bonus* bonus;
 	for(int i = 0; i < GEN_BONUS_COUNT; ++i)
@@ -73,6 +85,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 		if(bonus->position.y > maxObjectDistance) maxObjectDistance = bonus->position.y;
 	}
 
+
 	// Add some obstacles
 	Obstacle* obs;
 	for(int o = 0; o < GEN_OBSTACLE_COUNT; ++o)
@@ -85,17 +98,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 		if(obs->position.y > maxObjectDistance) maxObjectDistance = obs->position.y;
 	}
 
-	// Add some clouds
-	Cloud* tCloud;	
-	for(int c = 0; c < GEN_CLOUD_COUNT; ++c)
-	{
-		tCloud = new Cloud();
-		tCloud->position.x = rand() % 400;
-		tCloud->position.y = (rand() % 100 * c);
-		if(tCloud->position.y > mLevelDistance) break;
-		addRenderable(tCloud);
-		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
-	}
+	
 
 	// Add the ground. Basically make it a straight line, except in the middle.
 	// 5 on the left, 5 on the right
@@ -189,6 +192,18 @@ void GameScreen::resetLevel()
 
 	float maxObjectDistance = -1.0;
 
+	// Add some clouds
+	Cloud* tCloud;	
+	for(int c = 0; c < GEN_CLOUD_COUNT; ++c)
+	{
+		tCloud = new Cloud();
+		tCloud->position.x = rand() % 400 + 25;
+		tCloud->position.y = (rand() % 100 * c);
+		if(tCloud->position.y > mLevelDistance) break;
+		addRenderable(tCloud);
+		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
+	}
+
 	// Add some bonuses
 	Bonus* bonus;
 	for(int i = 0; i < GEN_BONUS_COUNT; ++i)
@@ -217,18 +232,7 @@ void GameScreen::resetLevel()
 		if(obs->position.y > maxObjectDistance) maxObjectDistance = obs->position.y;
 	}
 
-	// Add some clouds
-	Cloud* tCloud;	
-	for(int c = 0; c < GEN_CLOUD_COUNT; ++c)
-	{
-		tCloud = new Cloud();
-		tCloud->position.x = rand() % 400 + 25;
-		tCloud->position.y = (rand() % 100 * c);
-		if(tCloud->position.y > mLevelDistance) break;
-		addRenderable(tCloud);
-		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
-	}
-
+	
 	// Add the ground. Basically make it a straight line, except in the middle.
 	// 5 on the left, 5 on the right
 	Ground* tGround;
