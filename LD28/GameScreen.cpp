@@ -137,7 +137,7 @@ void GameScreen::gameTick(float delta)
 				// Update the score text
 				mScoreText.setString("Score: " + std::to_string(mPlayerScore));
 				// Use the Erase-remove idiom to remove the bonus
-				std::remove(std::begin(mGameObjects), std::end(mGameObjects),currPod->target);
+				mGameObjects.erase(std::remove(std::begin(mGameObjects), std::end(mGameObjects),currPod->target));
 				// and destroy it
 				delete(currPod->target);
 			}
@@ -178,9 +178,9 @@ void GameScreen::deathTick(float delta)
 		float velocity = 50.0f;
 		DeathParticle* tPart;
 		// Build a bunch of death particles
-		for(int i = 0; i < 16; ++i)
+		for(int i = 0; i < 33; ++i)
 		{
-			tPart = new DeathParticle(xDir[i % numDirs], yDir[i % numDirs], velocity * ((i > numDirs*0.5)?2:1));
+			tPart = new DeathParticle(xDir[i % numDirs], yDir[i % numDirs], velocity * (i + 1)/ numDirs);
 			tPart->position.x = player->position.x;
 			tPart->position.y = player->position.y;
 			mDeathObjects.push_back(tPart);
@@ -191,7 +191,7 @@ void GameScreen::deathTick(float delta)
 
 		// Now hide the player so it doesn't render anymore
 		// Another reason to use the renderables list and not the gameobjects list :/
-		std::remove(std::begin(mGameObjects), std::end(mGameObjects),player);
+		mGameObjects.erase(std::remove(std::begin(mGameObjects), std::end(mGameObjects),player));
 
 	}
 
