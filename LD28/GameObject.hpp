@@ -48,9 +48,9 @@ public:
 	// The name (not the ID) of this object
 	std::string name;
 
-protected:
 	// The debug id
 	std::string mID;
+protected:
 
 	// The shape to draw to the renderwindow
 	sf::CircleShape center;

@@ -24,16 +24,22 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	bgverts[2] = sf::Vertex(sf::Vector2<float>(500.0f,700.0f), bgDownStartColor);
 	bgverts[3] = sf::Vertex(sf::Vector2<float>(0.0f,700.0f), bgDownStartColor);
 
+	float maxObjectDistance = -1.0;
+
 	// Add some bonuses
 	Bonus* bonus;
 	for(int i = 0; i < 150; ++i)
 	{
 		bonus = new Bonus();
 		bonus->name = "Bonus " + std::to_string(i);
+		bonus->position.x = rand() % 325 + 25;
+		bonus->position.y = 500.0f + i * 150.0f;
+		// Make sure we don't go too far yo
+		if(bonus->position.y > mLevelDistance) break;
+
 		addGameObject(bonus);
 
-		bonus->position.x = rand() % 450 + 25;
-		bonus->position.y = 500.0f + i * 150.0f;
+		if(bonus->position.y > maxObjectDistance) maxObjectDistance = bonus->position.y;
 	}
 
 	// Add some obstacles
@@ -41,9 +47,11 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	for(int o = 0; o < 25; ++o)
 	{
 		obs = new Obstacle();
-		obs->position.x = 25 + rand() % 400;
+		obs->position.x = rand() % 325 + 25;
 		obs->position.y = (rand() % 100 + 250 * (o + 2));
+		if(obs->position.y > mLevelDistance) break;
 		addGameObject(obs);
+		if(obs->position.y > maxObjectDistance) maxObjectDistance = obs->position.y;
 	}
 
 	// Add some clouds
@@ -51,14 +59,18 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	for(int c = 0; c < 200; ++c)
 	{
 		tCloud = new Cloud();
-		tCloud->position.x = rand() % 500;
+		tCloud->position.x = rand() % 400;
 		tCloud->position.y = (rand() % 100 * c);
+		if(tCloud->position.y > mLevelDistance) break;
 		addRenderable(tCloud);
+		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
 	}
 
 	// Build the minimap
 	mMiniMap = new MiniMap();
-
+	mMiniMap->mDistance = maxObjectDistance;
+	// TODO: Figure out what's up with the MiniMap
+	//mMiniMap->preDrawObjects(mRenderables);
 	
 	// ******** Font dealings *********
 
