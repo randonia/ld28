@@ -31,6 +31,20 @@ Player::Player() : LATERAL_ACCELERATION(500.0f), VERTICAL_ACCELERATION(150.0f),
 		std::cerr << "Error loading player boned texture texture" << std::endl;
 	}
 	
+	// Load the player chute sounds
+	if(!mSoundChuteDeployingBuffer.loadFromFile("assets/audio/chute_deploying.ogg"))
+	{
+		std::cerr << "Error loading parachute open soundbuffer" << std::endl;
+	}
+	mSoundChuteDeploying.setBuffer(mSoundChuteDeployingBuffer);
+	mSoundChuteDeploying.setLoop(true);
+
+	if(!mSoundChuteOpenBuffer.loadFromFile("assets/audio/chute_open.ogg"))
+	{
+		std::cerr << "Error loading parachute open soundbuffer" << std::endl;
+	}
+	mSoundChuteOpen.setBuffer(mSoundChuteOpenBuffer);
+
 	mCollision = new CollisionModel(10.0f);
 	mCollision->parent = this;
 	mCollision->setCollidesWith(CollisionFlags::OBSTACLE | CollisionFlags::SCORE | CollisionFlags::GROUND);
@@ -105,7 +119,7 @@ void Player::chuteClosedTick(float delta)
 	{
 		std::cout << "Deploying chute!" << std::endl;
 		mChuteState = ParachuteState::DEPLOYING;
-
+		mSoundChuteDeploying.play();
 		// Change the texture out
 		sprite.setTexture(mDeployingTexture,true);
 		sprite.setOrigin(16.0f, 48.0f);
@@ -153,6 +167,9 @@ void Player::chuteDeployingTick(float delta)
 		sprite.setOrigin(16.0f, 48.0f);
 		// Restart the timer
 		mChuteTimer.restart();
+		// Play the sound
+		mSoundChuteDeploying.stop();
+		mSoundChuteOpen.play();
 	}
 }
 

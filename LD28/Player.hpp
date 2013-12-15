@@ -1,6 +1,7 @@
 #pragma once
 #include "gameobject.hpp"
 #include <SFML\Graphics.hpp>
+#include <SFML\Audio.hpp>
 #include <math.h>
 
 /* The parachute can be one of three things. Timers will dictate transitions
@@ -72,5 +73,10 @@ private:
 	void chuteDeployingTick(float delta);
 	void chuteOpenTick(float delta);
 	void chuteBonedTick(float delta);
+
+	sf::Sound mSoundChuteDeploying;
+	sf::SoundBuffer mSoundChuteDeployingBuffer;
+	sf::Sound mSoundChuteOpen;
+	sf::SoundBuffer mSoundChuteOpenBuffer;
 };
 

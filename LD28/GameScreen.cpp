@@ -17,6 +17,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	{
 		std::cerr << "Unable to load background audio track" << std::endl;
 	}
+	mBGM.setVolume(mBGM.getVolume() * 0.9f);
 	mBGM.play();
 	mBGM.setLoop(true);
 
