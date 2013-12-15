@@ -1,7 +1,7 @@
 #include "DeathParticle.hpp"
 #include "CollisionModel.hpp"
 
-DeathParticle::DeathParticle(float xDir, float yDir, float velocity)
+DeathParticle::DeathParticle(float xDir, float yDir, float velocity) : DISPLAY_LENGTH(500.0f)
 {
 	mID = "DeathParticle";
 	// Load the texture
@@ -19,9 +19,12 @@ DeathParticle::DeathParticle(float xDir, float yDir, float velocity)
 	mCollision->setCollisionType(CollisionFlags::NONE);
 	mCollision->setCollidesWith(CollisionFlags::NONE);
 
-	mDirection.x = xDir;
+	mDirection.x = xDir + (rand() % 10 - 5);
 	mDirection.y = yDir;
 	mVelocity = velocity;
+
+	mStopDisplayTimer.restart();
+	DISPLAY_LENGTH += rand() % 1000;
 }
 
 
@@ -32,12 +35,16 @@ DeathParticle::~DeathParticle(void)
 void DeathParticle::update(float delta)
 {
 	GameObject::update(delta);
+	mDirection.y += (5.0f + ((rand() % 100) / 100)) * delta;
 	position += mDirection * delta * mVelocity;
 	sprite.setPosition(position);
 }
 
 void DeathParticle::draw(sf::RenderTarget& window)
 {
-	window.draw(sprite);
+	if(mStopDisplayTimer.getElapsedTime().asMilliseconds() < DISPLAY_LENGTH)
+	{
+		window.draw(sprite);
+	}
 	GameObject::draw(window);
 }
