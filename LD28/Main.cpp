@@ -6,7 +6,22 @@
 
 #include "Screen.hpp"
 #include "GameScreen.hpp"
+#include "TitleScreen.hpp"
 
+
+// Build the screen stack
+std::stack<Screen*> screens;
+
+void addScreen(Screen* screenToAdd)
+{
+	screens.push(screenToAdd);
+}
+
+void removeScreen()
+{
+	// Do some better handling of this
+	screens.pop();
+}
 
 int main (int argc, char* argv[])
 {
@@ -31,15 +46,17 @@ int main (int argc, char* argv[])
 	FPSText.setStyle(sf::Text::Regular);
 	FPSText.setColor(sf::Color::Green);
 	
-	// Build the screen stack
-	std::stack<Screen*> screens;
-
 	sf::Event event;
 
 	// Build the first screen here
 	// TODO: Make this start in the game screen!
-	GameScreen* game = new GameScreen();
-	screens.push(game);
+	TitleScreen* title = new TitleScreen();
+	title->fAddScreen = addScreen;
+	title->fRemoveScreen = removeScreen;
+	screens.push(title);
+	//GameScreen* game = new GameScreen();
+	//game->fAddScreen = addScreen;
+	//screens.push(game);
 
 	while(window.isOpen())
 	{

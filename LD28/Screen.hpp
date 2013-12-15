@@ -16,6 +16,9 @@ public:
 	// Use this to send keys to the screens. That way multi-polling doesn't have to occur
 	virtual void sendKey(sf::Keyboard::Key key){}
 
+	void (*fAddScreen)(Screen*);
+	void (*fRemoveScreen)();
+	
 protected:
 	// An identification string for debugging purposes
 	std::string mID;

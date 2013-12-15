@@ -90,6 +90,7 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bonus.hpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="Obstacle.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Screen.hpp" />
+    <ClInclude Include="TitleScreen.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
