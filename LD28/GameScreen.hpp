@@ -10,6 +10,7 @@
 #include "DeathParticle.hpp"
 #include "Cloud.hpp"
 #include "MiniMap.hpp"
+#include "Ground.hpp"
 
 enum GameState
 {
