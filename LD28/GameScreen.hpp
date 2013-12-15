@@ -53,6 +53,7 @@ public:
 
 	sf::Font mFont_ubuntu;
 	sf::Text DEBUGTEXT;
+	sf::Text mPromptText;
 
 	// A list of debugging for labels!
 	std::pair<std::string, float> * DEBUGLABELS;

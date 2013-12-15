@@ -4,7 +4,8 @@
 GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_VELOCITY(150.0f),
 	mPlayerScore(0), SCORE_VALUE(500), mState(GameState::PLAYING), bgverts(sf::Quads,4), SAVED_STATE_DELAY(1500.0f),
 	bgUpStartColor(76,201,255), bgUpEndColor(54,141,178), bgDownStartColor(61,161,204), bgDownEndColor(42,111,140),
-	mFont_ubuntu(), DEBUGTEXT("DEBUG", mFont_ubuntu), mScoreText("Score: 0", mFont_ubuntu),
+	mFont_ubuntu(), DEBUGTEXT("DEBUG", mFont_ubuntu), 
+	mPromptText("Prompt", mFont_ubuntu), mScoreText("Score: 0", mFont_ubuntu),
 	DBG_FALLSPEED(0),DBG_TRAVELED(1), DBG_PLAYER_YVEL(2)
 {
 	this->mID = "GameScreen";
@@ -44,7 +45,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 
 	// Add some obstacles
 	Obstacle* obs;
-	for(int o = 0; o < 25; ++o)
+	for(int o = 0; o < 150; ++o)
 	{
 		obs = new Obstacle();
 		obs->position.x = rand() % 325 + 25;
@@ -105,6 +106,13 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	mScoreText.setStyle(sf::Text::Regular);
 	mScoreText.setColor(sf::Color::Blue);
 	mScoreText.setPosition(360.0f, 10.0f);
+
+	mPromptText.setCharacterSize(20);
+	mPromptText.setStyle(sf::Text::Regular);
+	mPromptText.setPosition(250.0f, 450.0f);
+	mPromptText.setColor(sf::Color::White);
+	mPromptText.setString("Press [R] to restart the level");
+	mPromptText.setOrigin(mPromptText.getLocalBounds().width * 0.5f, mPromptText.getLocalBounds().height * 0.5f);
 
 
 	DEBUGTEXT.setCharacterSize(10);
@@ -621,6 +629,16 @@ void GameScreen::draw(sf::RenderTarget& window)
 		(*drawtor)->draw(window);
 	}
 	mMiniMap->draw(window);
+	// Draw the prompt text if we're in the death state
+	if(mState == GameState::GAMEOVER)
+	{
+		mPromptText.setPosition(250.0f, 450.0f);
+		mPromptText.setColor(sf::Color::Black);
+		window.draw(mPromptText);
+		mPromptText.setColor(sf::Color::White);
+		mPromptText.setPosition(249.0f, 449.0f);
+		window.draw(mPromptText);
+	}
 	window.draw(DEBUGTEXT);
 	window.draw(mScoreText);
 }
