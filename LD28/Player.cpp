@@ -3,6 +3,7 @@
 
 Player::Player() : LATERAL_ACCELERATION(500.0f), VERTICAL_ACCELERATION(150.0f),
 	MAX_LATERAL_SPEED(250.0f), MAX_VERTICAL_SPEED(100.0f), DAMPENING_CONST(0.75f), 
+	mRenderingEnabled(true),
 	mChuteState(ParachuteState::CLOSED), CHUTE_DEPLOY_TIME(1000.0f), CHUTE_LIFE_TIME(5000.0f), PARACHUTE_LATERAL_SPEED(100.0f)
 {
 	mID = "Player";
@@ -191,10 +192,24 @@ void Player::chuteBonedTick(float delta)
 
 }
 
+void Player::reset()
+{
+	// Resets the player to default settings. Actually pretty simple
+	mChuteState = ParachuteState::CLOSED;
+	sprite.setTexture(mFallTexture, true);
+	sprite.setOrigin(16.0f,16.0f);
+	position = sf::Vector2<float>(0.0f,0.0f);
+	velocity = sf::Vector2<float>(0.0f,0.0f);
+	mRenderingEnabled = true;
+}
+
 void Player::draw(sf::RenderTarget& window)
 {
 	// Draw the sprite
-	window.draw(sprite);
+	if(mRenderingEnabled)
+	{
+		window.draw(sprite);
+	}
 
 	// Draw the base for debugging
 	GameObject::draw(window);

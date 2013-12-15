@@ -118,6 +118,108 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	DEBUGLABELS[DBG_PLAYER_YVEL] = std::make_pair("Player Y Velocity: ", 0.0f);
 }
 
+void GameScreen::resetLevel()
+{
+	// First re-initialize all the shit in the gamescreen constructor
+	mPlayerScore = 0;
+	mState = GameState::PLAYING;
+	mFallSpeed = 0.0f;
+
+	// Pwn out all the gameobjects
+	while(mGameObjects.size() > 0)
+	{
+		removeGameObject(mGameObjects.front());
+	}
+	// Then clear our ALL the renderables and gameobjects
+	while(mRenderables.size() > 0)
+	{
+		removeRenderable(mRenderables.front());
+	}
+	while(mDeathObjects.size() > 0)
+	{
+		mDeathObjects.pop_back();
+	}
+
+	// Then reset the player
+	player->reset();
+	// Don't forget to friggin add the player back
+	addGameObject(player);
+
+	mLevelTraveled = 0.0f;
+	bgverts[0].color = bgUpStartColor;
+	bgverts[1].color = bgUpStartColor;
+	bgverts[2].color = bgDownStartColor;
+	bgverts[3].color = bgDownStartColor;
+
+	float maxObjectDistance = -1.0;
+
+	// Add some bonuses
+	Bonus* bonus;
+	for(int i = 0; i < 150; ++i)
+	{
+		bonus = new Bonus();
+		bonus->name = "Bonus " + std::to_string(i);
+		bonus->position.x = rand() % 325 + 25;
+		bonus->position.y = 500.0f + i * 150.0f;
+		// Make sure we don't go too far yo
+		if(bonus->position.y > mLevelDistance) break;
+
+		addGameObject(bonus);
+
+		if(bonus->position.y > maxObjectDistance) maxObjectDistance = bonus->position.y;
+	}
+
+	// Add some obstacles
+	Obstacle* obs;
+	for(int o = 0; o < 25; ++o)
+	{
+		obs = new Obstacle();
+		obs->position.x = rand() % 325 + 25;
+		obs->position.y = (rand() % 100 + 250 * (o + 2));
+		if(obs->position.y > mLevelDistance) break;
+		addGameObject(obs);
+		if(obs->position.y > maxObjectDistance) maxObjectDistance = obs->position.y;
+	}
+
+	// Add some clouds
+	Cloud* tCloud;	
+	for(int c = 0; c < 200; ++c)
+	{
+		tCloud = new Cloud();
+		tCloud->position.x = rand() % 400;
+		tCloud->position.y = (rand() % 100 * c);
+		if(tCloud->position.y > mLevelDistance) break;
+		addRenderable(tCloud);
+		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
+	}
+
+	// Add the ground. Basically make it a straight line, except in the middle.
+	// 5 on the left, 5 on the right
+	Ground* tGround;
+	const int groundY = mLevelDistance + 550.0f;
+	//const int groundY = 350;
+
+	for(int g = 0; g < 5; ++g)
+	{
+		// Make the left side
+		tGround = new Ground();
+		tGround->position.x = 16 + g * 32;
+		//tGround->position.y = mLevelDistance + 250.0f;
+		tGround->position.y = groundY;
+		addGameObject(tGround);
+
+		// Meow make the right side
+		tGround = new Ground();
+		tGround->position.x = 450 - (16 + g * 32);
+		tGround->position.y = groundY;
+		addGameObject(tGround);
+	}
+	
+	mMiniMap->reset();
+	mMiniMap->mDistance = maxObjectDistance;
+
+	
+}
 
 GameScreen::~GameScreen(void)
 {
@@ -260,42 +362,48 @@ void GameScreen::gameTick(float delta)
 
 void GameScreen::deathTick(float delta)
 {
-	// If death hasn't been initialized (ie: the death animation hasn't started) start it
-	if(mDeathObjects.size() == 0)
+
+	// If the player hits "R", restart the game
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		// This is a list of directions.  Basically it's an array of Vectors without the overhead
-		int numDirs = 8;
-		// Start pointing straight right, then spiral around clockwise
-		int xDir[] = { 1, 1, 0,-1,-1,-1, 0, 1};
-		int yDir[] = { 0, 1, 1, 1, 0,-1,-1,-1};
-		float velocity = 50.0f;
-		DeathParticle* tPart;
-		// Build a bunch of death particles
-		for(int i = 0; i < 33; ++i)
+		resetLevel();
+	}
+	else
+	{
+		// If death hasn't been initialized (ie: the death animation hasn't started) start it
+		if(mDeathObjects.size() == 0)
 		{
-			tPart = new DeathParticle(xDir[i % numDirs], yDir[i % numDirs], velocity * (i + 1)/ numDirs);
-			tPart->position.x = player->position.x;
-			tPart->position.y = player->position.y;
-			mDeathObjects.push_back(tPart);
-			// Push it to GameObjects to automagically handle drawing. This should probably be extracted
-			// into a renderables list, and a gameobjects list, but for jam, not necessary
-			addRenderable(tPart);
+			// This is a list of directions.  Basically it's an array of Vectors without the overhead
+			int numDirs = 8;
+			// Start pointing straight right, then spiral around clockwise
+			int xDir[] = { 1, 1, 0,-1,-1,-1, 0, 1};
+			int yDir[] = { 0, 1, 1, 1, 0,-1,-1,-1};
+			float velocity = 50.0f;
+			DeathParticle* tPart;
+			// Build a bunch of death particles
+			for(int i = 0; i < 33; ++i)
+			{
+				tPart = new DeathParticle(xDir[i % numDirs], yDir[i % numDirs], velocity * (i + 1)/ numDirs);
+				tPart->position.x = player->position.x;
+				tPart->position.y = player->position.y;
+				mDeathObjects.push_back(tPart);
+				// Push it to GameObjects to automagically handle drawing. This should probably be extracted
+				// into a renderables list, and a gameobjects list, but for jam, not necessary
+				addRenderable(tPart);
+			}
+
+			// Change the player to not render
+			player->mRenderingEnabled = false;
 		}
 
-		// Now hide the player so it doesn't render anymore
-		// Another reason to use the renderables list and not the gameobjects list :/
-		removeGameObject(player);
-
+		// Meow update them all
+		for(std::vector<GameObject*>::iterator itor = mDeathObjects.begin(); 
+			itor != mDeathObjects.end();
+			++itor)
+		{
+			(*itor)->update(delta);
+		}
 	}
-
-	// Meow update them all
-	for(std::vector<GameObject*>::iterator itor = mDeathObjects.begin(); 
-		itor != mDeathObjects.end();
-		++itor)
-	{
-		(*itor)->update(delta);
-	}
-
 }
 
 void GameScreen::landingTick(float delta)

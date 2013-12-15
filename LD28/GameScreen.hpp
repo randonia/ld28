@@ -86,6 +86,9 @@ private:
 
 	void runCollisionChecks();
 
+	// This is going to be a big mess. Restarts the level
+	void resetLevel();
+
 	// This is the game's background. It will gradually change based on
 	// how close you are to the end
 	sf::VertexArray bgverts;

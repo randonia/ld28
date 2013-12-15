@@ -22,6 +22,8 @@ public:
 	void updateMarker(float percentComplete);
 	void draw(sf::RenderTarget& target);
 
+	void reset();
+
 	// The maximum distance (y-wise) an object is
 	float mDistance;
 

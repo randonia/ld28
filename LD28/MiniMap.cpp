@@ -31,6 +31,11 @@ MiniMap::~MiniMap(void)
 {
 }
 
+void MiniMap::reset()
+{
+	updateMarker(0.0f);
+}
+
 void MiniMap::preDrawObjects(std::vector<GameObject*> renderings)
 {
 	// The marker is what displays the dots for the map. Move it around

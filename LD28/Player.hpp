@@ -46,6 +46,7 @@ public:
 	void update(float delta) override;
 	void draw(sf::RenderTarget& window) override;
 
+	void reset();
 
 	const float LATERAL_ACCELERATION;
 	const float VERTICAL_ACCELERATION;
@@ -62,6 +63,8 @@ public:
 	const float DAMPENING_CONST;
 
 	ParachuteState mChuteState;
+
+	bool mRenderingEnabled;
 
 private:
 	void chuteClosedTick(float delta);
