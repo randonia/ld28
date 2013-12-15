@@ -105,7 +105,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	mScoreText.setCharacterSize(14);
 	mScoreText.setStyle(sf::Text::Regular);
 	mScoreText.setColor(sf::Color::Blue);
-	mScoreText.setPosition(360.0f, 10.0f);
+	mScoreText.setPosition(320.0f, 10.0f);
 
 	mPromptText.setCharacterSize(20);
 	mPromptText.setStyle(sf::Text::Regular);
