@@ -141,7 +141,6 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	mPromptText.setStyle(sf::Text::Regular);
 	mPromptText.setPosition(250.0f, 450.0f);
 	mPromptText.setColor(sf::Color::White);
-	mPromptText.setString("Press [R] to restart the level");
 	mPromptText.setOrigin(mPromptText.getLocalBounds().width * 0.5f, mPromptText.getLocalBounds().height * 0.5f);
 
 
@@ -437,6 +436,7 @@ void GameScreen::deathTick(float delta)
 		// If death hasn't been initialized (ie: the death animation hasn't started) start it
 		if(mDeathObjects.size() == 0)
 		{
+			mPromptText.setString("Press [R] to restart the level");
 			// This is a list of directions.  Basically it's an array of Vectors without the overhead
 			int numDirs = 8;
 			// Start pointing straight right, then spiral around clockwise
@@ -677,11 +677,24 @@ void GameScreen::draw(sf::RenderTarget& window)
 	// Draw the prompt text if we're in the death state
 	if(mState == GameState::GAMEOVER)
 	{
+		mPromptText.setOrigin(mPromptText.getLocalBounds().width * 0.5f, mPromptText.getLocalBounds().height * 0.5f);
 		mPromptText.setPosition(250.0f, 450.0f);
 		mPromptText.setColor(sf::Color::Black);
 		window.draw(mPromptText);
 		mPromptText.setColor(sf::Color::White);
 		mPromptText.setPosition(249.0f, 449.0f);
+		window.draw(mPromptText);
+	}
+	// Render a big fat "PAUSED"
+	else if(mState == GameState::PAUSED)
+	{
+		mPromptText.setString("    PAUSED\n[P] to resume");
+		mPromptText.setOrigin(mPromptText.getLocalBounds().width * 0.5f, mPromptText.getLocalBounds().height * 0.5f);
+		mPromptText.setPosition(240.0f, 250.0f);
+		mPromptText.setColor(sf::Color::Black);
+		window.draw(mPromptText);
+		mPromptText.setColor(sf::Color::White);
+		mPromptText.setPosition(239.0f, 249.0f);
 		window.draw(mPromptText);
 	}
 	// Draw the prompt if the player is in parachute mode. The "ChuteRemaining"
