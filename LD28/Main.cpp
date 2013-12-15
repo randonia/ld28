@@ -31,7 +31,7 @@ int main (int argc, char* argv[])
 	sf::Clock fpsTimer;
 
 	// Set up the window
-	sf::RenderWindow window(sf::VideoMode(500,700), "LD28");
+	sf::RenderWindow window(sf::VideoMode(500,700), "Don't Deploy Your Chute - LD48");
 
 	// Deal with game time for anything that needs it
 	sf::Clock clock;
