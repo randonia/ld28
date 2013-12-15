@@ -30,6 +30,17 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(1000.0f), MIN_F
 	obs->position.y = 600;
 	mGameObjects.push_back(obs);
 
+	// Add some clouds
+	/*Cloud* tCloud;	
+	for(int c = 0; c < 200; ++c)
+	{
+		tCloud = new Cloud();
+		tCloud->position.x = rand() % 500;
+		tCloud->position.y = (rand() % 100 * c);
+		mGameObjects.push_back(tCloud);
+	}*/
+
+	// Load some debug text
 	DEBUGFONT.loadFromFile("assets/fonts/UbuntuMono.ttf");
 	DEBUGTEXT.setCharacterSize(10);
 	DEBUGTEXT.setStyle(sf::Text::Regular);

@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bonus.cpp" />
+    <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="CollisionModel.cpp" />
     <ClCompile Include="DeathParticle.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -90,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bonus.hpp" />
+    <ClInclude Include="Cloud.hpp" />
     <ClInclude Include="CollisionModel.hpp" />
     <ClInclude Include="DeathParticle.hpp" />
     <ClInclude Include="GameObject.hpp" />

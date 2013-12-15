@@ -8,6 +8,7 @@
 #include "Bonus.hpp"
 #include "Obstacle.hpp"
 #include "DeathParticle.hpp"
+#include "Cloud.hpp"
 
 enum GameState
 {
