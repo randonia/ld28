@@ -54,6 +54,8 @@ public:
 	// The lateral boundaries that the player can't go past
 	const int BOUNDS_LEFT;
 	const int BOUNDS_RIGHT;
+	const int BOUNDS_UP;
+	const int BOUNDS_DOWN;
 
 	const float DAMPENING_CONST;
 
