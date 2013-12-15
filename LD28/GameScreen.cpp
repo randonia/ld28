@@ -496,8 +496,17 @@ void GameScreen::nextLevelTick(float delta)
 {
 	// Maybe do some fancy animation. But for now, just give them a fat score bonus 
 	// and reset the level
-	mPlayerScore += 10000.0f;
-	resetLevel();
+	// We have to see if the player messed up and deployed his/her chute though
+	if(player->mChuteState == ParachuteState::CLOSED)
+	{
+		mPlayerScore += 10000.0f;
+		resetLevel();
+	}
+	else
+	{
+		resetLevel();
+		player->setBoned();
+	}
 }
 
 void GameScreen::runCollisionChecks()

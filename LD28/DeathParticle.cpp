@@ -46,5 +46,9 @@ void DeathParticle::draw(sf::RenderTarget& window)
 	{
 		window.draw(sprite);
 	}
+	else if(mStopDisplayTimer.getElapsedTime().asMilliseconds() < DISPLAY_LENGTH * 2.0f)
+	{
+		window.draw(center);
+	}
 	GameObject::draw(window);
 }

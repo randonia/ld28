@@ -46,6 +46,7 @@ public:
 	void update(float delta) override;
 	void draw(sf::RenderTarget& window) override;
 
+	void setBoned();
 	void reset();
 
 	const float LATERAL_ACCELERATION;

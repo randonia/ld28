@@ -180,16 +180,22 @@ void Player::chuteOpenTick(float delta)
 	// See if it's time to ruin the player's day.
 	if(mChuteTimer.getElapsedTime().asMilliseconds() > CHUTE_LIFE_TIME)
 	{
-		mChuteState = ParachuteState::BONED;
-		// Change the textures
-		sprite.setTexture(mBonedTexture, true);
-		sprite.setOrigin(16.0f, 16.0f);
+		setBoned();
 	}
 }
 
 void Player::chuteBonedTick(float delta)
 {
+	sprite.rotate(1.0f);
+}
 
+void Player::setBoned()
+{
+	mChuteState = ParachuteState::BONED;
+	// Change the textures
+	sprite.setTexture(mBonedTexture, true);
+	sprite.setOrigin(16.0f, 16.0f);
+	velocity.x = rand() % 100;
 }
 
 void Player::reset()
@@ -198,6 +204,7 @@ void Player::reset()
 	mChuteState = ParachuteState::CLOSED;
 	sprite.setTexture(mFallTexture, true);
 	sprite.setOrigin(16.0f,16.0f);
+	sprite.setRotation(0.0f);
 	position = sf::Vector2<float>(position.x ,0.0f);
 	velocity = sf::Vector2<float>(velocity.x ,0.0f);
 	mRenderingEnabled = true;
