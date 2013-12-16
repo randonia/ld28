@@ -113,7 +113,7 @@ void Player::chuteClosedTick(float delta)
 	}
 	else
 	{
-		velocity.y = pow((0.15), delta) * velocity.y;
+		velocity.y = (float)(pow((0.15), delta) * velocity.y);
 	}
 
 	// Deploy the chute if the player hits space
@@ -214,7 +214,13 @@ void Player::setBoned()
 	// Change the textures
 	sprite.setTexture(mBonedTexture, true);
 	sprite.setOrigin(16.0f, 16.0f);
-	velocity.x = rand() % 100;
+	velocity.x = (float)(rand() % 100);
+}
+
+void Player::stopAllSounds()
+{
+	mSoundChuteDeploying.stop();
+	mSoundChuteOpen.stop();
 }
 
 void Player::reset()
@@ -236,7 +242,7 @@ std::string Player::chuteTimeRemaining()
 
 int Player::chuteSecondsRemaining()
 {
-	return CHUTE_LIFE_TIME * 0.001f - mChuteTimer.getElapsedTime().asSeconds();
+	return (int)(CHUTE_LIFE_TIME * 0.001f - mChuteTimer.getElapsedTime().asSeconds());
 }
 
 void Player::draw(sf::RenderTarget& window)

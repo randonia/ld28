@@ -4,10 +4,10 @@ class HighScoreScreen :
 	public Screen
 {
 public:
-	HighScoreScreen(float score);
+	HighScoreScreen(int score);
 	~HighScoreScreen(void);
 
-	float mScore;
+	int mScore;
 
 	void update(float delta) override;
 	void draw(sf::RenderTarget& window) override;

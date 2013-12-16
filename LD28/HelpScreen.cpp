@@ -15,7 +15,7 @@ HelpScreen::HelpScreen(void) : mCurrHelpFrame(0), mLeftReleased(false), mRightRe
 	}
 
 	mMenuSprite.setTexture(mHelp1);
-	mMenuSprite.setOrigin(mHelp1.getSize().x * 0.5, 0.0f);
+	mMenuSprite.setOrigin(mHelp1.getSize().x * 0.5f, 0.0f);
 	mMenuSprite.setPosition(250.0f, 100.0f);
 }
 

@@ -48,6 +48,7 @@ public:
 	void draw(sf::RenderTarget& window) override;
 
 	void setBoned();
+	void stopAllSounds();
 	void reset();
 
 	std::string chuteTimeRemaining();

@@ -13,8 +13,8 @@ DeathParticle::DeathParticle(float xDir, float yDir, float velocity) : DISPLAY_L
 	{
 		sprite.setTexture(texture);
 		sprite.setOrigin(texture.getSize().x * 0.5f, texture.getSize().y * 0.5f);
-		sprite.setRotation(rand() % 10);
-		mRot = ((rand() % 10) / 3.0f) * (rand() % 10 < 5)?-1:1;
+		sprite.setRotation((float)(rand() % 10));
+		mRot = (float)((float)(rand() % 10) / 3.0f) * (rand() % 10 < 5)?-1.0f:1.0f;
 	}
 
 	mCollision = new CollisionModel();

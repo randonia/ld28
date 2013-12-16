@@ -1,7 +1,7 @@
 #include "HighScoreScreen.hpp"
 
 
-HighScoreScreen::HighScoreScreen(float score) : mFontUbuntu(), mDisplayText("Hooray", mFontUbuntu)
+HighScoreScreen::HighScoreScreen(int score) : mFontUbuntu(), mDisplayText("Hooray", mFontUbuntu)
 {
 	mScore = score;
 	// Initialize the texture
@@ -19,7 +19,7 @@ HighScoreScreen::HighScoreScreen(float score) : mFontUbuntu(), mDisplayText("Hoo
 	mBGM.setLoop(true);
 
 	mSprite.setTexture(mScoreTexture);
-	mSprite.setOrigin(mScoreTexture.getSize().x * 0.5, 0.0f);
+	mSprite.setOrigin(mScoreTexture.getSize().x * 0.5f, 0.0f);
 	mSprite.setPosition(250.0f, 0.0f);
 
 	mFontUbuntu.loadFromFile("assets/fonts/UbuntuMono.ttf");
@@ -28,7 +28,7 @@ HighScoreScreen::HighScoreScreen(float score) : mFontUbuntu(), mDisplayText("Hoo
 	mDisplayText.setColor(sf::Color::White);
 	mDisplayText.setPosition(250.0f,170.0f);
 	mDisplayText.setString(std::to_string((int)mScore));
-	mDisplayText.setOrigin(mDisplayText.getLocalBounds().width * 0.5, mDisplayText.getLocalBounds().height * 0.5);
+	mDisplayText.setOrigin(mDisplayText.getLocalBounds().width * 0.5f, mDisplayText.getLocalBounds().height * 0.5f);
 	
 }
 
