@@ -624,6 +624,7 @@ void GameScreen::runCollisionChecks()
 			std::cout << "Obstacle hit! Kill the player" << std::endl;
 			player->velocity.x = 0.0f;
 			player->velocity.y = 0.0f;
+			player->stopAllSounds();
 			mFallSpeed = 0.0f;
 			// Change the game state to gameover man, game over!
 			mState = GameState::GAMEOVER;
@@ -658,6 +659,7 @@ void GameScreen::runCollisionChecks()
 					// Queue the shitty audio
 					mBGM.pause();
 					mSmash.play();
+					player->stopAllSounds();
 					break;
 				case ParachuteState::OPEN:
 					// They are safe! Woo hoo!

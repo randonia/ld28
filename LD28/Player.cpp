@@ -217,6 +217,12 @@ void Player::setBoned()
 	velocity.x = (float)(rand() % 100);
 }
 
+void Player::stopAllSounds()
+{
+	mSoundChuteDeploying.stop();
+	mSoundChuteOpen.stop();
+}
+
 void Player::reset()
 {
 	// Resets the player to default settings. Actually pretty simple
