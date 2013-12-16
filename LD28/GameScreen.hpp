@@ -68,6 +68,8 @@ public:
 	// Displays the score on the right side
 	sf::Text mScoreText;
 
+	float lerp(float from, float to, float percent);
+
 private:
 	// The following mLevelx things are used to determine the level's end zone
 	// The distance the player must travel

@@ -30,8 +30,8 @@ int main (int argc, char* argv[])
 	int frames = 0;
 	sf::Clock fpsTimer;
 
-	// Set up the window
-	sf::RenderWindow window(sf::VideoMode(500,700), "Don't Deploy Your Chute - LD48");
+	// Set up the window to just have a title bar. Might fix the X button audio bug
+	sf::RenderWindow window(sf::VideoMode(500,700), "Don't Deploy Your Chute - LD48",sf::Style::Titlebar);
 
 	// Deal with game time for anything that needs it
 	sf::Clock clock;
@@ -45,7 +45,11 @@ int main (int argc, char* argv[])
 	FPSText.setCharacterSize(10);
 	FPSText.setStyle(sf::Text::Regular);
 	FPSText.setColor(sf::Color::Green);
+	FPSText.setOrigin(0.0f,2.0f);
 	
+	bool drawFPS = false;
+	bool mFKeyReleased = true;
+
 	sf::Event event;
 
 	// Build the first screen here
@@ -70,7 +74,7 @@ int main (int argc, char* argv[])
 			int timepassed = fpsTimer.getElapsedTime().asMilliseconds();
 			FPS = 1000.0f / (float)((float)timepassed / (float)frames);
 			// Set it to the FPS string
-			FPSText.setString(std::to_string((FPS)));
+			FPSText.setString("FPS: " + std::to_string((FPS)));
 			frames = 0;
 			fpsTimer.restart();
 		}
@@ -90,12 +94,32 @@ int main (int argc, char* argv[])
 		{
 			window.close();
 		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+		{
+			if(mFKeyReleased)
+			{
+				drawFPS = !drawFPS;
+				mFKeyReleased = false;
+			}
+		}
+		else
+		{
+			mFKeyReleased = true;
+		}
 
 		window.clear(sf::Color::Black);
 		// Update the first screen
 		screens.top()->update(deltaTime);
 		screens.top()->draw(window);
-		window.draw(FPSText);
+		if(drawFPS)
+		{
+			FPSText.setPosition(1.0f,1.0f);
+			FPSText.setColor(sf::Color::Black);
+			window.draw(FPSText);
+			FPSText.setColor(sf::Color::Yellow);
+			FPSText.setPosition(0.0f,0.0f);
+			window.draw(FPSText);
+		}
 		window.display();
 	}
 

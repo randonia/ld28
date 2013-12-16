@@ -54,6 +54,8 @@ Player::Player() : LATERAL_ACCELERATION(500.0f), VERTICAL_ACCELERATION(150.0f),
 
 Player::~Player(void)
 {
+	mSoundChuteDeploying.stop();
+	mSoundChuteOpen.stop();
 }
 
 void Player::update(float delta)

@@ -4,7 +4,7 @@
 GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_VELOCITY(150.0f),
 	GEN_BONUS_COUNT(250), GEN_OBSTACLE_COUNT(400), GEN_CLOUD_COUNT(600),
 	mPlayerScore(0), SCORE_VALUE(500), mState(GameState::PLAYING), bgverts(sf::Quads,4), SAVED_STATE_DELAY(1500.0f),
-	bgUpStartColor(76,201,255), bgUpEndColor(54,141,178), bgDownStartColor(61,161,204), bgDownEndColor(42,111,140),
+	bgUpStartColor(76,201,255), bgUpEndColor(0,107,184), bgDownStartColor(61,161,204), bgDownEndColor(175,62,0),
 	mFont_ubuntu(), DEBUGTEXT("DEBUG", mFont_ubuntu), 
 	mPromptText("Prompt", mFont_ubuntu), mScoreText("Score: 0", mFont_ubuntu),
 	DBG_FALLSPEED(0),DBG_TRAVELED(1), DBG_PLAYER_YVEL(2)
@@ -39,8 +39,6 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	}
 	mYeah.setBuffer(mYeahBuff);
 	
-
-
 	// Make the player
 	player = new Player();
 	addGameObject(player);
@@ -92,7 +90,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	{
 		obs = new Obstacle();
 		obs->position.x = rand() % 425 + 25;
-		obs->position.y = (rand() % 100 + 250 * (o + 2));
+		obs->position.y = (rand() % 100 + 250 * (o + 3));
 		if(obs->position.y > mLevelDistance) break;
 		addGameObject(obs);
 		if(obs->position.y > maxObjectDistance) maxObjectDistance = obs->position.y;
@@ -226,7 +224,7 @@ void GameScreen::resetLevel()
 	{
 		obs = new Obstacle();
 		obs->position.x = rand() % 425 + 25;
-		obs->position.y = (rand() % 250 + 100 * (o + 2));
+		obs->position.y = (rand() % 250 + 100 * (o + 3));
 		if(obs->position.y > mLevelDistance) break;
 		addGameObject(obs);
 		if(obs->position.y > maxObjectDistance) maxObjectDistance = obs->position.y;
@@ -268,7 +266,10 @@ void GameScreen::resetLevel()
 
 GameScreen::~GameScreen(void)
 {
-	
+	mBGM.stop();
+	mSmash.stop();
+	mScore.stop();
+	mYeah.stop();
 }
 
 void GameScreen::update(float delta)
@@ -420,6 +421,32 @@ void GameScreen::gameTick(float delta)
 	// Move the marker forward!
 	mLevelTraveled += mFallSpeed * delta;
 	mPlayerScore += (2 * mFallSpeed - MIN_FALL_VELOCITY) * delta;
+
+	// Update the background colors!
+	// set the top colors to the lerped value
+	float percent = mLevelTraveled / mLevelDistance;
+	float topR = lerp(bgUpStartColor.r, bgUpEndColor.r, percent);
+	float topG = lerp(bgUpStartColor.g, bgUpEndColor.g, percent);
+	float topB = lerp(bgUpStartColor.b, bgUpEndColor.b, percent);
+
+	float botR = lerp(bgDownStartColor.r, bgDownEndColor.r, percent);
+	float botG = lerp(bgDownStartColor.g, bgDownEndColor.g, percent);
+	float botB = lerp(bgDownStartColor.b, bgDownEndColor.b, percent);
+	
+	bgverts[0].color.r = topR;
+	bgverts[0].color.g = topG;
+	bgverts[0].color.b = topB;
+	bgverts[1].color.r = topR;
+	bgverts[1].color.g = topG;
+	bgverts[1].color.b = topB;
+
+	bgverts[2].color.r = botR;
+	bgverts[2].color.g = botG;
+	bgverts[2].color.b = botB;
+	bgverts[3].color.r = botR;
+	bgverts[3].color.g = botG;
+	bgverts[3].color.b = botB;
+
 	
 	// Update the score text
 	mScoreText.setString("Score: " + std::to_string(mPlayerScore));
@@ -724,7 +751,7 @@ void GameScreen::draw(sf::RenderTarget& window)
 		window.draw(mPromptText);
 	}
 
-	window.draw(DEBUGTEXT);
+	//window.draw(DEBUGTEXT);
 	// Outline the score text as well
 	mScoreText.setPosition(320.0f, 10.0f);
 	mScoreText.setColor(sf::Color::Black);
@@ -732,6 +759,11 @@ void GameScreen::draw(sf::RenderTarget& window)
 	mScoreText.setPosition(319.0f, 9.0f);
 	mScoreText.setColor(sf::Color::White);
 	window.draw(mScoreText);
+}
+
+float GameScreen::lerp( float from, float to, float percent)
+{
+	return (to - from) * percent + from;
 }
 
 GameObject* GameScreen::addRenderable(GameObject* renderMe)
