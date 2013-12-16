@@ -11,7 +11,7 @@ TitleScreen::TitleScreen(void)
 	}
 
 	mMenuSprite.setTexture(mMenuTexture);
-	mMenuSprite.setOrigin(mMenuTexture.getSize().x * 0.5, 0.0f);
+	mMenuSprite.setOrigin(mMenuTexture.getSize().x * 0.5f, 0.0f);
 	mMenuSprite.setPosition(250.0f, 100.0f);
 	
 	if(!mBGMusic.openFromFile("assets/audio/bgmenu.ogg"))

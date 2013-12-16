@@ -26,6 +26,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 		std::cerr << "Unable to load hit_hurt audio track" << std::endl;
 	}
 	mSmash.setBuffer(mSmashBuff);
+	mSmash.setVolume(mSmash.getVolume() * 0.25f);
 	
 	if(!mScoreBuff.loadFromFile("assets/audio/score.wav"))
 	{
@@ -60,8 +61,8 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	for(int c = 0; c < GEN_CLOUD_COUNT; ++c)
 	{
 		tCloud = new Cloud();
-		tCloud->position.x = rand() % 400;
-		tCloud->position.y = (rand() % 100 * c);
+		tCloud->position.x = (float)(rand() % 400);
+		tCloud->position.y = (float)(rand() % 100 * c);
 		if(tCloud->position.y > mLevelDistance) break;
 		addRenderable(tCloud);
 		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
@@ -73,8 +74,8 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	{
 		bonus = new Bonus();
 		bonus->name = "Bonus " + std::to_string(i);
-		bonus->position.x = rand() % 425 + 25;
-		bonus->position.y = 500.0f + i * 150.0f;
+		bonus->position.x = (float)(rand() % 425 + 25);
+		bonus->position.y = (float)(500.0f + i * 150.0f);
 		// Make sure we don't go too far yo
 		if(bonus->position.y > mLevelDistance) break;
 
@@ -89,8 +90,8 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	for(int o = 0; o < GEN_OBSTACLE_COUNT; ++o)
 	{
 		obs = new Obstacle();
-		obs->position.x = rand() % 425 + 25;
-		obs->position.y = (rand() % 100 + 250 * (o + 3));
+		obs->position.x = (float)(rand() % 425 + 25);
+		obs->position.y = (float)(rand() % 100 + 250 * (o + 3));
 		if(obs->position.y > mLevelDistance) break;
 		addGameObject(obs);
 		if(obs->position.y > maxObjectDistance) maxObjectDistance = obs->position.y;
@@ -101,21 +102,21 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 	// Add the ground. Basically make it a straight line, except in the middle.
 	// 5 on the left, 5 on the right
 	Ground* tGround;
-	const int groundY = mLevelDistance + 550.0f;
+	const float groundY = mLevelDistance + 550.0f;
 	//const int groundY = 350;
 
 	for(int g = 0; g < 5; ++g)
 	{
 		// Make the left side
 		tGround = new Ground();
-		tGround->position.x = 16 + g * 32;
+		tGround->position.x = 16.0f + g * 32.0f;
 		//tGround->position.y = mLevelDistance + 250.0f;
 		tGround->position.y = groundY;
 		addGameObject(tGround);
 
 		// Meow make the right side
 		tGround = new Ground();
-		tGround->position.x = 450 - (16 + g * 32);
+		tGround->position.x = 450.0f - (16 + g * 32);
 		tGround->position.y = groundY;
 		addGameObject(tGround);
 	}
@@ -195,8 +196,8 @@ void GameScreen::resetLevel()
 	for(int c = 0; c < GEN_CLOUD_COUNT; ++c)
 	{
 		tCloud = new Cloud();
-		tCloud->position.x = rand() % 400 + 25;
-		tCloud->position.y = (rand() % 100 * c);
+		tCloud->position.x = (float)(rand() % 400 + 25);
+		tCloud->position.y = (float)(rand() % 100 * c);
 		if(tCloud->position.y > mLevelDistance) break;
 		addRenderable(tCloud);
 		if(tCloud->position.y > maxObjectDistance) maxObjectDistance = tCloud->position.y;
@@ -208,7 +209,7 @@ void GameScreen::resetLevel()
 	{
 		bonus = new Bonus();
 		bonus->name = "Bonus " + std::to_string(i);
-		bonus->position.x = rand() % 425 + 25;
+		bonus->position.x = (float)(rand() % 425 + 25);
 		bonus->position.y = 500.0f + i * 150.0f;
 		// Make sure we don't go too far yo
 		if(bonus->position.y > mLevelDistance) break;
@@ -223,8 +224,8 @@ void GameScreen::resetLevel()
 	for(int o = 0; o < GEN_OBSTACLE_COUNT; ++o)
 	{
 		obs = new Obstacle();
-		obs->position.x = rand() % 425 + 25;
-		obs->position.y = (rand() % 250 + 100 * (o + 3));
+		obs->position.x = (float)(rand() % 425 + 25);
+		obs->position.y = (float)(rand() % 250 + 100 * (o + 3));
 		if(obs->position.y > mLevelDistance) break;
 		addGameObject(obs);
 		if(obs->position.y > maxObjectDistance) maxObjectDistance = obs->position.y;
@@ -234,21 +235,21 @@ void GameScreen::resetLevel()
 	// Add the ground. Basically make it a straight line, except in the middle.
 	// 5 on the left, 5 on the right
 	Ground* tGround;
-	const int groundY = mLevelDistance + 550.0f;
+	const float groundY = mLevelDistance + 550.0f;
 	//const int groundY = 350;
 
 	for(int g = 0; g < 5; ++g)
 	{
 		// Make the left side
 		tGround = new Ground();
-		tGround->position.x = 16 + g * 32;
+		tGround->position.x = 16.0f + g * 32;
 		//tGround->position.y = mLevelDistance + 250.0f;
 		tGround->position.y = groundY;
 		addGameObject(tGround);
 
 		// Meow make the right side
 		tGround = new Ground();
-		tGround->position.x = 450 - (16 + g * 32);
+		tGround->position.x = 450.0f - (16 + g * 32);
 		tGround->position.y = groundY;
 		addGameObject(tGround);
 	}
@@ -420,18 +421,18 @@ void GameScreen::gameTick(float delta)
 
 	// Move the marker forward!
 	mLevelTraveled += mFallSpeed * delta;
-	mPlayerScore += (2 * mFallSpeed - MIN_FALL_VELOCITY) * delta;
+	mPlayerScore += (int)((2.0f * mFallSpeed - MIN_FALL_VELOCITY) * delta);
 
 	// Update the background colors!
 	// set the top colors to the lerped value
 	float percent = mLevelTraveled / mLevelDistance;
-	float topR = lerp(bgUpStartColor.r, bgUpEndColor.r, percent);
-	float topG = lerp(bgUpStartColor.g, bgUpEndColor.g, percent);
-	float topB = lerp(bgUpStartColor.b, bgUpEndColor.b, percent);
+	unsigned int topR = (unsigned int)lerp(bgUpStartColor.r, bgUpEndColor.r, percent);
+	unsigned int topG = (unsigned int)lerp(bgUpStartColor.g, bgUpEndColor.g, percent);
+	unsigned int topB = (unsigned int)lerp(bgUpStartColor.b, bgUpEndColor.b, percent);
 
-	float botR = lerp(bgDownStartColor.r, bgDownEndColor.r, percent);
-	float botG = lerp(bgDownStartColor.g, bgDownEndColor.g, percent);
-	float botB = lerp(bgDownStartColor.b, bgDownEndColor.b, percent);
+	unsigned int botR = (unsigned int)lerp(bgDownStartColor.r, bgDownEndColor.r, percent);
+	unsigned int botG = (unsigned int)lerp(bgDownStartColor.g, bgDownEndColor.g, percent);
+	unsigned int botB = (unsigned int)lerp(bgDownStartColor.b, bgDownEndColor.b, percent);
 	
 	bgverts[0].color.r = topR;
 	bgverts[0].color.g = topG;
@@ -478,7 +479,7 @@ void GameScreen::deathTick(float delta)
 			// Build a bunch of death particles
 			for(int i = 0; i < 33; ++i)
 			{
-				tPart = new DeathParticle(xDir[i % numDirs], yDir[i % numDirs], velocity * (i + 1)/ numDirs);
+				tPart = new DeathParticle((float)xDir[i % numDirs], (float)yDir[i % numDirs], velocity * (i + 1)/ numDirs);
 				tPart->position.x = player->position.x;
 				tPart->position.y = player->position.y;
 				mDeathObjects.push_back(tPart);
@@ -574,7 +575,7 @@ void GameScreen::nextLevelTick(float delta)
 	// We have to see if the player messed up and deployed his/her chute though
 	if(player->mChuteState == ParachuteState::CLOSED)
 	{
-		mPlayerScore += 10000.0f;
+		mPlayerScore += 10000;
 		resetLevel();
 	}
 	else
@@ -591,10 +592,10 @@ void GameScreen::runCollisionChecks()
 
 	// Do collision detection before moving people. For now this is going to have to 
 	// be a naive collision detection
-	for(int n = 0; n < mGameObjects.size(); ++n)
+	for(unsigned int n = 0; n < mGameObjects.size(); ++n)
 	{
 		currObj = mGameObjects[n];
-		for(int m = 0; m < mGameObjects.size(); ++m)
+		for(unsigned int m = 0; m < mGameObjects.size(); ++m)
 		{
 			otherObj = mGameObjects[m];
 			// Skip if this == this
