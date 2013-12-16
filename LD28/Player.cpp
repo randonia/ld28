@@ -233,6 +233,7 @@ void Player::reset()
 	position = sf::Vector2<float>(position.x ,0.0f);
 	velocity = sf::Vector2<float>(velocity.x ,0.0f);
 	mRenderingEnabled = true;
+	stopAllSounds();
 }
 
 std::string Player::chuteTimeRemaining()
