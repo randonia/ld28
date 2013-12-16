@@ -26,6 +26,7 @@ GameScreen::GameScreen(void) : GRAVITY(50.0f), MAX_FALL_VELOCITY(500), MIN_FALL_
 		std::cerr << "Unable to load hit_hurt audio track" << std::endl;
 	}
 	mSmash.setBuffer(mSmashBuff);
+	mSmash.setVolume(mSmash.getVolume() * 0.25f);
 	
 	if(!mScoreBuff.loadFromFile("assets/audio/score.wav"))
 	{
