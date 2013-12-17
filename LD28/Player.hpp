@@ -1,7 +1,7 @@
 #pragma once
 #include "gameobject.hpp"
-#include <SFML\Graphics.hpp>
-#include <SFML\Audio.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <math.h>
 
 /* The parachute can be one of three things. Timers will dictate transitions

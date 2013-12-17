@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stack>
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "Screen.hpp"
 #include "GameScreen.hpp"

@@ -3,7 +3,7 @@
 #ifndef __COLLISIONMODEL_H__
 #define __COLLISIONMODEL_H__
 
-#include <SFML\System\Vector2.hpp>
+#include <SFML/System/Vector2.hpp>
 #include "GameObject.hpp"
 
 struct CollisionModel

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include "GameObject.hpp"
 
 /* The MiniMap will draw a rendertexture of a line showing your
