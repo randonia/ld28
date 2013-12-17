@@ -1,5 +1,5 @@
 #pragma once
-#include "gameobject.hpp"
+#include "GameObject.hpp"
 
 // The bonus object is the thing that gives you points
 class Bonus : public GameObject

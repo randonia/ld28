@@ -1,5 +1,5 @@
 #pragma once
-#include "gameobject.hpp"
+#include "GameObject.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <math.h>

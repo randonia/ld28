@@ -1,5 +1,5 @@
 #pragma once
-#include "screen.hpp"
+#include "Screen.hpp"
 class HelpScreen :
 	public Screen
 {

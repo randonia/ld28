@@ -1,5 +1,5 @@
 #pragma once
-#include "gameobject.hpp"
+#include "GameObject.hpp"
 // The ground is the end of the level. If the player hits the ground 
 // with a parachute active, They save their score and end the run.
 // If they hit the ground with no parachute active, they die.

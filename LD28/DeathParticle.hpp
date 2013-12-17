@@ -1,5 +1,5 @@
 #pragma once
-#include "gameobject.hpp"
+#include "GameObject.hpp"
 
 // The death particle is basically the Mega Man particle when he dies
 class DeathParticle :

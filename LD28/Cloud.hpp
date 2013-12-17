@@ -1,5 +1,5 @@
 #pragma once
-#include "gameobject.hpp"
+#include "GameObject.hpp"
 class Cloud :
 	public GameObject
 {
